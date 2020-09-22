@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title></title>
+		<style type="text/css">
+			
+		body {
+            background-color: #ECF0F1;
+            padding: 30px 25%;
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 50px;
+        }
+
+        #container {
+            margin: 0 auto;
+            width: 600px;
+            height: 600px;
+            display: grid;
+            grid-template-columns: repeat(10, 64px);
+        }
+
+        #container div {
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        .tile {
+            background-color: #fff;
+            color: #000;
+			border: 1px solid #dfdfde;
+        }
+		.legal
+		{
+			-webkit-box-shadow: inset 0px 0px 0px 5px #f00;
+			box-shadow: inset 0px 0px 0px 5px #f00;
+		}
+		.hover
+		{
+			-webkit-box-shadow: inset 0px 0px 5px 5px rgba(50, 150, 25, .5);
+			box-shadow: inset 0px 0px 5px 5px rgba(50, 150, 25, .5);
+		}
+		.smoothmove
+		{
+			-webkit-transition: top 0.35s ease-in-out, left 0.35s ease-in-out;
+			-moz-transition: top 0.35s ease-in-out, left 0.35s ease-in-out;
+			-ms-transition: top 0.35s ease-in-out, left 0.35s ease-in-out;
+			-o-transition: top 0.35s ease-in-out, left 0.35s ease-in-out;
+			transition: top 0.35s ease-in-out, left 0.35s ease-in-out;
+		}
+
+		.smoothfade
+		{
+			-webkit-transition: box-shadow 0.25s ease-out;
+			-moz-transition: box-shadow 0.25s ease-out;
+			-ms-transition: box-shadow 0.25s ease-out;
+			-o-transition: box-shadow 0.25s ease-out;
+			transition: box-shadow 0.25s ease-out;
+
+			-webkit-transition: background-color 0.25s ease-in time;
+			-moz-transition: background-color 0.25s ease-in time;
+			-ms-transition: background-color 0.25s ease-in time;
+			-o-transition: background-color 0.25s ease-in time;
+			transition: background-color 0.25s ease-in time;
+		}
+		</style>
+		<script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+	</head>
+	<body>
+		<div id="container">
+		</div>
+		<script>
+
+			var createBoard = function () {
+				var MAX_CELL = 10;
+				var count = 0;
+				for(var i = 0; i < MAX_CELL; i++) {
+					for(var j = 0; j < MAX_CELL; j++) {
+						$('#container').append('<div class="tile smoothfade" data-gridpos = "'+i+j+'"></div>');
+						count++;
+					}
+				}
+			}
+			jQuery(document).ready(function($) {
+				createBoard();
+				let active = [];
+				$(".tile").on('click',function(){
+					
+					
+					//currentTile = $(this);
+					/*
+					var midY = $(this).position().top += ( $(this).width() / 2 );
+					var midX = $(this).position().left += ( $(this).width() / 2 );
+					var player = $("#player");
+					*/
+
+
+					//tiles.removeClass('legal');		
+					//player.css({"top":midY - (0.5 * player.width()), "left":midX-(0.5*player.width())});
+				})
+
+				.on('mouseenter',function(){
+					$(this).addClass('hover');
+					let pos = parseInt($(this).attr('data-gridpos'));
+					let x = $(this).attr('data-gridpos')[0];
+					let y = $(this).attr('data-gridpos')[1];
+				
+					for(let i = 1; i < 4; i++){
+						 let right = pos + i;
+						 let left = pos - i;
+						 let down = pos + (10 * i);
+						 let top = pos - (10 * i);
+												
+						if(right <= parseInt(x + '9')){
+							$('*[data-gridpos="'+ (right < 10 ? '0' + right : right) +'"]').addClass('hover');
+							active.push($('*[data-gridpos="'+ (right < 10 ? '0' + right : right) +'"]'))
+						}
+						if(down <= parseInt('9' + y)){
+							$('*[data-gridpos="'+ (down < 10 ? '0' + down : down) +'"]').addClass('hover');
+							active.push($('*[data-gridpos="'+ (down < 10 ? '0' + down : down) +'"]'));
+						}
+						if(left >= parseInt(x + '0')){
+							$('*[data-gridpos="'+ (left < 10 ? '0' + left : left) +'"]').addClass('hover');
+							active.push($('*[data-gridpos="'+ (left < 10 ? '0' + left : left) +'"]'));
+						}
+						if(top >= parseInt('0' + y)){
+							$('*[data-gridpos="'+ (top < 10 ? '0' + top : top) +'"]').addClass('hover');
+							active.push($('*[data-gridpos="'+ (top < 10 ? '0' + top : top) +'"]'));
+						}
+					}
+					
+				})
+
+				.on('mouseleave',function(){
+					$(this).removeClass('hover');
+					for(let tile of active)
+					tile.removeClass('hover');
+				});
+			});
+		
+		</script>
+	</body>
+</html>
