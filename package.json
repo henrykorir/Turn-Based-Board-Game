@@ -1,0 +1,26 @@
+{
+  "name": "turn-based-board-game",
+  "version": "1.0.0",
+  "description": "This is a turn based js board to be played over the internet",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/henrykorir/Turn-Based-Board-Game.git"
+  },
+  "author": "Henry Korir",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/henrykorir/Turn-Based-Board-Game/issues"
+  },
+  "homepage": "https://github.com/henrykorir/Turn-Based-Board-Game#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "gulp": "^4.0.2",
+    "gulp-jshint": "^2.1.0",
+    "jshint": "^2.12.0"
+  }
+}
