@@ -27,21 +27,46 @@
             align-items: center;
             display: flex;
         }
+		
+		#player
+		{
+			width: 32px;
+			height: 32px;
+			background-color: red;
+			position: absolute;
+			border-radius: 50%;
+			z-index: 10;
+			top:39px;
+			left:39px;
+		}
 
+		span.icon
+		{
+			display: block;
+			padding-top: 2px;
+			padding-left: 3px;
+			color:white;
+			font-size:150%;
+		}
         .tile {
             background-color: #fff;
             color: #000;
 			border: 1px solid #dfdfde;
         }
+		
+		/*
+		.legal:hover
+		{
+			background-color: white;
+			-webkit-box-shadow: 0px 0px 25px 10px #cdd3f6;
+			box-shadow: 0px 0px 25px 10px #cdd3f6;
+			border-radius: 7px;
+		}
+		*/
 		.legal
 		{
-			-webkit-box-shadow: inset 0px 0px 0px 5px #f00;
-			box-shadow: inset 0px 0px 0px 5px #f00;
-		}
-		.hover
-		{
-			-webkit-box-shadow: inset 0px 0px 5px 5px rgba(50, 150, 25, .5);
-			box-shadow: inset 0px 0px 5px 5px rgba(50, 150, 25, .5);
+			-webkit-box-shadow: inset 0px 0px 5px 5px #000000;
+			box-shadow: inset 0px 0px 5px 5px #000000;
 		}
 		.smoothmove
 		{
@@ -71,74 +96,94 @@
 	</head>
 	<body>
 		<div id="container">
+			<div id="player" class ="smoothmove">
+				<span class="icon">♖</span>
+			</div>
 		</div>
 		<script>
 
 			var createBoard = function () {
 				var MAX_CELL = 10;
-				var count = 0;
 				for(var i = 0; i < MAX_CELL; i++) {
 					for(var j = 0; j < MAX_CELL; j++) {
 						$('#container').append('<div class="tile smoothfade" data-gridpos = "'+i+j+'"></div>');
-						count++;
 					}
 				}
+
 			}
+			
 			jQuery(document).ready(function($) {
 				createBoard();
-				let active = [];
+				console.log(document);
+				let active = []; //open slot for player to move to
+				let currentTile;
 				$(".tile").on('click',function(){
+						//$("#player").toggle();
+						$(this).addClass('legal');
+						let pos = parseInt($(this).attr('data-gridpos'));
+						let x = $(this).attr('data-gridpos')[0];
+						let y = $(this).attr('data-gridpos')[1];
 					
-					
-					//currentTile = $(this);
-					/*
-					var midY = $(this).position().top += ( $(this).width() / 2 );
-					var midX = $(this).position().left += ( $(this).width() / 2 );
-					var player = $("#player");
-					*/
+						for(let i = 1; i < 4; i++){
+							 let right = pos + i;
+							 let left = pos - i;
+							 let down = pos + (10 * i);
+							 let top = pos - (10 * i);
+													
+							if(right <= parseInt(x + '9')){
+								$('*[data-gridpos="'+ (right < 10 ? '0' + right : right) +'"]').addClass('legal');
+								active.push($('*[data-gridpos="'+ (right < 10 ? '0' + right : right) +'"]'))
+							}
+							if(down <= parseInt('9' + y)){
+								$('*[data-gridpos="'+ (down < 10 ? '0' + down : down) +'"]').addClass('legal');
+								active.push($('*[data-gridpos="'+ (down < 10 ? '0' + down : down) +'"]'));
+							}
+							if(left >= parseInt(x + '0')){
+								$('*[data-gridpos="'+ (left < 10 ? '0' + left : left) +'"]').addClass('legal');
+								active.push($('*[data-gridpos="'+ (left < 10 ? '0' + left : left) +'"]'));
+							}
+							if(top >= parseInt('0' + y)){
+								$('*[data-gridpos="'+ (top < 10 ? '0' + top : top) +'"]').addClass('legal');
+								active.push($('*[data-gridpos="'+ (top < 10 ? '0' + top : top) +'"]'));
+							}
+						}
+						//currentTile = $(this);
+						//console.log("this = ",this);
+						var midY = $(this).position().top += ( $(this).width() / 2 );
+						var midX = $(this).position().left += ( $(this).width() / 2 );
+						var player = $("#player");
 
-
-					//tiles.removeClass('legal');		
-					//player.css({"top":midY - (0.5 * player.width()), "left":midX-(0.5*player.width())});
+						//tiles.removeClass('legal');		
+						player.css({"top":midY - (0.5 * player.width()), "left":midX-(0.5*player.width())});
+						currentTile = $(this);
+						
+			
 				})
 
 				.on('mouseenter',function(){
-					$(this).addClass('hover');
-					let pos = parseInt($(this).attr('data-gridpos'));
-					let x = $(this).attr('data-gridpos')[0];
-					let y = $(this).attr('data-gridpos')[1];
-				
-					for(let i = 1; i < 4; i++){
-						 let right = pos + i;
-						 let left = pos - i;
-						 let down = pos + (10 * i);
-						 let top = pos - (10 * i);
-												
-						if(right <= parseInt(x + '9')){
-							$('*[data-gridpos="'+ (right < 10 ? '0' + right : right) +'"]').addClass('hover');
-							active.push($('*[data-gridpos="'+ (right < 10 ? '0' + right : right) +'"]'))
-						}
-						if(down <= parseInt('9' + y)){
-							$('*[data-gridpos="'+ (down < 10 ? '0' + down : down) +'"]').addClass('hover');
-							active.push($('*[data-gridpos="'+ (down < 10 ? '0' + down : down) +'"]'));
-						}
-						if(left >= parseInt(x + '0')){
-							$('*[data-gridpos="'+ (left < 10 ? '0' + left : left) +'"]').addClass('hover');
-							active.push($('*[data-gridpos="'+ (left < 10 ? '0' + left : left) +'"]'));
-						}
-						if(top >= parseInt('0' + y)){
-							$('*[data-gridpos="'+ (top < 10 ? '0' + top : top) +'"]').addClass('hover');
-							active.push($('*[data-gridpos="'+ (top < 10 ? '0' + top : top) +'"]'));
-						}
-					}
+
 					
 				})
 
 				.on('mouseleave',function(){
-					$(this).removeClass('hover');
+					$(this).removeClass('legal');
 					for(let tile of active)
-					tile.removeClass('hover');
+					tile.removeClass('legal');
 				});
+				//$('*[data-gridpos=00]').trigger('click');
+				/*
+				//$('*[data-gridpos=00]').add("#player");
+				var value = (Math.floor((Math.random()*99 + 0)));
+				var attr = value <= 9 ? '0'+ value : value;
+				console.log(attr);
+				var mY = $('*[data-gridpos="'+attr+'"').position().top += ( $('*[data-gridpos="'+attr+'"').width() / 2 );
+				var mX = $('*[data-gridpos="'+attr+'"').position().left += ( $('*[data-gridpos="'+attr+'"').width() / 2 );
+				var player = $("#player");
+				//player.removeClass('smoothmove');
+				
+				player.css({"top":mY - (0.5 * player.width()), "left":mX-(0.5*player.width())});
+				currentTile = $(this);
+				*/
 			});
 		
 		</script>
