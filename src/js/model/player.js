@@ -1,4 +1,7 @@
-class Player{
+import Position from './position.js';
+import Weapon from './weapon.js';
+
+export default class Player{
 	constructor(id, position, points, weapon ){
 		this._id = id;
 		this._position = position;

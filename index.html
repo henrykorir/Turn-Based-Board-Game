@@ -5,7 +5,7 @@
 		<link rel="stylesheet" href="./css/styles.css" type="text/css" />
 	</head>
 	<body>
-		<div id="container">
+		<div id="root" class="container">
 			<div id="player" class ="smoothmove">
 				<span class="icon">♖</span>
 			</div>
@@ -17,7 +17,7 @@
 				var MAX_CELL = 10;
 				for(var i = 0; i < MAX_CELL; i++) {
 					for(var j = 0; j < MAX_CELL; j++) {
-						$('#container').append('<div class="tile smoothfade" data-gridpos = "'+i+j+'"></div>');
+						$('#root').append('<div class="tile smoothfade" data-gridpos = "'+i+j+'"></div>');
 					}
 				}
 
