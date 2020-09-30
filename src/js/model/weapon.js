@@ -1,4 +1,4 @@
-import Position from './Position.js'
+import Position from './Position.js';
 export default class Weapon{
 	constructor(id, name, position, damage){
 		this._id = id;

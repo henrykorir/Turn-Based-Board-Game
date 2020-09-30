@@ -23,14 +23,14 @@ export default class Player{
 	set points(points){
 		this._points = points;
 	}
+	get points(){
+		return this._points;
+	}
 	get weapon(){
 		return this._weapon;
 	}
 	set weapon(weapon){
 		this._weapon = weapon;
-	}
-	get weapon(){
-		return this._weapon;
 	}
 }
 
