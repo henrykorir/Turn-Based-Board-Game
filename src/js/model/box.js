@@ -1,6 +1,8 @@
-class Box{
-	constructor(id, status, position){
+import Position from './position.js';
+export default class Box{
+	constructor(id, attr, status, position){
 		this._id = id;
+		this._attr = attr;
 		this._status = status;
 		this._position = position;
 	}
@@ -9,6 +11,12 @@ class Box{
 	}
 	get id(){
 		return this._id;
+	}
+	set attr(attr){
+		this._attr = attr;
+	}
+	get attr(){
+		return this._attr;
 	}
 	set status(status){
 		this._status = status;

@@ -1,7 +1,12 @@
-class Model{
+export default class Model{
 	constructor(){
-		this._state = {}
+		this._state = {};
 	}
+	
+	get grid(){
+		return this._state.grid;
+	}
+
 	set players(players){
 		this._state.players = players.slice() || [];
 	}
@@ -43,5 +48,8 @@ class Model{
 	}
 	get state(){
 		return this._state;
+	}
+	setGrid(grid){
+		this._state.grid = grid;
 	}
 } 

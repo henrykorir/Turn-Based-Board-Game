@@ -8,7 +8,7 @@ header {
 	margin-bottom: 50px;
 }
 
-#container {
+.container {
 	margin: 0 auto;
 	width: 600px;
 	height: 600px;
@@ -16,7 +16,7 @@ header {
 	grid-template-columns: repeat(10, 64px);
 }
 
-#container div {
+.container div {
 	justify-content: center;
 	align-items: center;
 	display: flex;
