@@ -1,14 +1,31 @@
+import Position from './position.js';
+import Player from './player.js';
+import Weapon from './weapon.js';
+
 export default class Model{
 	constructor(){
-		this._state = {};
+		this._state = {
+			currentPlayer: {},
+			players: [],
+			weapons: [],
+			barriers: [],
+		};
 	}
-	
 	get grid(){
 		return this._state.grid;
 	}
-
+	
+	get barriers(){
+		return this._state.barriers;
+	}
+	setPlayer(player){
+		this._state.players.push(player);
+	}
+	getPlayer(id){
+		return this._state.players[id];
+	}
 	set players(players){
-		this._state.players = players.slice() || [];
+		this._state.players = players.slice();
 	}
 	get players(){
 		return this._state.players;
@@ -25,11 +42,20 @@ export default class Model{
 	get currentBox(){
 		return this._state.currentBox;
 	}
+	setWeapon(weapon){
+		this._state.weapons.push(weapon);
+	}
+	getWeapon(id){
+		return this._state.weapons[id];
+	}
 	set currentWeapon(weapon){
 		this._state.currentWeapon = weapon;
 	}
 	get currentWeapon(){
 		return this._state.currentWeapon;
+	}
+	set setWeapons(weapon){
+		this._state.weapons = (this._state.weapons || []).push(weapon);
 	}
 	set weapons(weapons){
 		this._state.weapons = weapons.slice() || [];
@@ -51,5 +77,8 @@ export default class Model{
 	}
 	setGrid(grid){
 		this._state.grid = grid;
+	}
+	setBarrier(barrier){
+		this._state.barriers.push(barrier);
 	}
 } 
