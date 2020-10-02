@@ -22,7 +22,8 @@ export default class Controller{
 		.createBarriers()
 		.createPlayers()
 		.createWeapons();
-		console.log(this._model.state);
+		this._view.placeObjects(this._model.state);
+		this.legalBoxes(this._model.state.currentPlayer.box.attr);
 	}
 	createBoard(){
 		let grid = [];
@@ -48,7 +49,6 @@ export default class Controller{
 			this._model.grid[index].status = 1;
 			this._model.setBarrier(this._model.grid[index]);
 			//barriers.push(new Box(grid[index].id, grid[index].attr, this._model.grid[index].status, grid[index].position));
-
 			
 		}
 		
@@ -64,7 +64,8 @@ export default class Controller{
 		/*3b. otherwise set the box as occupied*/
 			this._model.grid[index].status = 3;
 		/*3c. create the item*/
-			let weapon = new Weapon(i, ((i < 2) ? "pawn" : "knight"),grid[index].position,50 *( i + 1 ));
+			let weapon = new Weapon(i, this._model.grid[index],((i < 2) ? "pawn" : "knight"),grid[index].position,50 *( i + 1 ));
+			weapon.isTaken = true;
 			this._model.setWeapon(weapon);
 			this._model.setPlayer(new Player(i,grid[index],grid[index].position,100, weapon));
 		}
@@ -81,20 +82,21 @@ export default class Controller{
 		/*3b  otherwise set the box as occupied*/
 			this._model.grid[index].status = 2;
 		/*4  repeat until count is 12*/
-			this._model.setWeapon(new Weapon(i, ((i < 3) ? "bishop" : "queen"),grid[index].position,50 *( i + 1 )));
+			this._model.setWeapon(new Weapon(i, this._model.grid[index],((i < 3) ? "bishop" : "queen"),grid[index].position,50 *( i + 1 )));
 		}
 		return this;
 	}
 	handleMovingPlayer = attr =>{
-		console.log("Update");
-		/*1. move current player and then choose thenext player*/
+		/*1. move current player and then choose the next player*/
 		for(let index in this._model.grid){
 			if(this._model.grid[index].attr.trim() == attr.trim()){
-				this._model.grid[index].status = 3;
-				this._model.currentPlayer.box = attr;
+				//this._model.grid[index].status = 3;
+				this._model.currentPlayer.box = this._model.grid[index];
 				let id = this._model.currentPlayer.id;
-				//this._model.players[id].box = attr;
-				//this._model.currentPlayer = (id == 0) ? this._model.players[1] :  this._model.players[0];
+				console.log(this._model.players[id]);
+				this._model.players[id].box = this._model.grid[index];
+				this._model.currentPlayer = (id == 0) ? this._model.players[1] :  this._model.players[0];
+				//console.log(this._model.currentPlayer);
 				break;
 			}
 		}
