@@ -2,6 +2,7 @@ import Position from './Position.js';
 export default class Weapon{
 	constructor(id, name, position, damage){
 		this._id = id;
+		this._name = name;
 		this._position = position;
 		this._damage = damage;
 	}
@@ -11,6 +12,7 @@ export default class Weapon{
 	get id(){
 		return this._id;
 	}
+	
 	set name(name){
 		this._name = name;
 	}

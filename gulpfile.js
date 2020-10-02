@@ -69,4 +69,4 @@ gulp.task('watch',gulp.series(['browserSync']), function() {
 });
 
 //Default Task
-gulp.task('default', gulp.series(['css', 'html', 'lint', 'vendor', 'scripts', 'watch']));
+gulp.task('default', gulp.series(['css', 'html', 'vendor', 'scripts', 'watch']));
