@@ -47,7 +47,10 @@ gulp.task('scripts', function() {
 			.pipe(source('index.js'))
 			.pipe(gulp.dest('dist/js'))
 });
-
+gulp.task('img', function() {
+    return gulp.src('src/assets/*')
+        .pipe(gulp.dest('dist/assets'));
+});
 gulp.task('browserSync', () => {
 	browserSync.init({
 		server: './dist',
@@ -69,4 +72,4 @@ gulp.task('watch',gulp.series(['browserSync']), function() {
 });
 
 //Default Task
-gulp.task('default', gulp.series(['css', 'html', 'vendor', 'scripts', 'watch']));
+gulp.task('default', gulp.series(['css', 'html', 'vendor', 'scripts', 'img', 'watch']));
