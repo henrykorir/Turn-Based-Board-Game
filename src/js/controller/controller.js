@@ -15,16 +15,15 @@ export default class Controller{
 		
 		this.init = this.init.bind(this);
 		this._model.bindUserChanged(this.onPlayerChanged);
-		
+		this.onPlayerChanged = this.onPlayerChanged.bind(this);
 	}
+	
 	init = () => {
 		this.createBoard().createBarriers().createPlayers().createWeapons();
 		this._view.placeObjects(this._model.state);
-		this._model.currentPlayer = this._model.state.players[0];
 		this._view.movePlayer(this.onPlayerMoved);
-		
-		this.onPlayerChanged(this._model.state);
 	}
+	
 	createBoard = () => {
 		let grid = [];
 		let index = 0;
@@ -38,6 +37,7 @@ export default class Controller{
 		this._model.setGrid(grid);
 		return this;
 	}
+	
 	createBarriers = () => {
 		let index, grid = [...this._model.state.grid];
 		for(let n = 1; n <= 12; n++){
@@ -52,6 +52,7 @@ export default class Controller{
 		}
 		return this;
 	}
+	
 	createPlayers = () => {
 		let index, grid = [...this._model.state.grid];
 		for(let i = 0; i < 2; i++){
@@ -67,8 +68,10 @@ export default class Controller{
 			this._model.setWeapon(weapon);
 			this._model.setPlayer(new Player(i,grid[index],grid[index].position,100, weapon));
 		}
+		this._model.currentPlayer = this._model.players[0];
 		return this;
 	}
+	
 	createWeapons = () => {
 		let index, grid = [...this._model.state.grid];
 		for(let i = 2; i < 4; i++){
@@ -85,52 +88,74 @@ export default class Controller{
 	}
 	
 	onPlayerMoved = ( player , dest ) =>{
-		let src = player.box.attr;
 		/*1. move current player and then choose the next player*/
-		this._model.state.grid[player.id].status = 0; //set source  box as empty
-		this._model.state.grid[parseInt(dest)].status = 3; //set destination box as occupied
-		console.log(this._model.state.players, player);
-		this._model.state.players[player.id].box = this._model.state.grid[parseInt(dest)];
-		this._model.currentPlayer = (player.id == 0) ? this._model.players[1] :  this._model.players[0];
+		let index = parseInt(dest);
+		this._model.grid[player.id].status = 0; //set source  box as empty
+		this._model.grid[index].status = 3; //set destination box as occupied
+		this._model.players[player.id].box = this._model.grid[index];
+		//Below is the turn taking point which causes the onPlayerChanged() callback to be fired
+		this._model.currentPlayer = this._model.players[player.id == 0 ? 1 : 0]; 
 	}
-	onPlayerChanged = ( state ) =>{
-		let attr = state.currentPlayer.box.attr;
+	
+	onPlayerChanged = ( player ) =>{
+		let attr = player.box.attr;
 		let pos =  parseInt(attr);
 		let x = attr.charAt(0);
 		let y = attr.charAt(1);
-		let active = []; //open slot for player to move to
-		let grid = [...state.grid];
+		let grid = [...this._model.state.grid];
+		let active = [
+			...this.rightOpenBoxes(grid, pos, x),
+			...this.leftOpenBoxes(grid, pos, x),
+			...this.downOpenBoxes(grid, pos, y),
+			...this.topOpenBoxes(grid, pos, y)
+		]; //open boxes for player to move to
+		this._view.showNextPaths(active);
+		this._view.getCurrentPlayer( player );
+		
+		return;
+	}
+	rightOpenBoxes = (grid, attr, x) => {
+		let positions = [];
 		for(let i = 1; i < 4; i++){
-			let right = pos + i;
-			let left = pos - i;
-			let down = pos + (10 * i);
-			let top = pos - (10 * i);
+			let right = attr + i;
 			if(right <= parseInt(x + '9')){
-				if(grid[right].status < 2){
-					//console.log("right",right, grid[right]);
-					active.push(grid[right].attr);
-				}
-			}
-			if(down <= parseInt('9' + y)){
-				if(grid[down].status < 2) {
-					//console.log("down",down, grid[down]);
-					active.push(grid[down].attr);
-				}
-			}
-			if(left >= parseInt(x + '0')){
-				if(grid[left].status < 2){
-					//console.log("left",left, grid[left]);
-					active.push(grid[left].attr);
-				}
-			}
-			if(top >= parseInt('0' + y)){
-				if(grid[top].status < 2){
-					//console.log("top",top, grid[top]);
-					active.push(grid[top].attr);
-				}
+				if(grid[right].status > 1) break;
+				positions.push(grid[right].attr);
 			}
 		}
-		this._view.getCurrentPlayer(state.currentPlayer);
-		this._view.showNextPaths(active);
+		return positions;
+	}
+	leftOpenBoxes = (grid, attr, x) => {
+		let positions = [];
+		for(let i = 1; i < 4; i++){
+			let left = attr - i;
+			if(left >= parseInt(x + '0')){
+				if(grid[left].status > 1) break;
+				positions.push(grid[left].attr);
+			}
+		}
+		return positions;
+	}
+	downOpenBoxes = (grid, attr, y) => {
+		let positions = [];
+		for(let i = 1; i < 4; i++){
+			let down = attr + (10 * i);
+			if(down <= parseInt('9' + y)){
+				if(grid[down].status > 1) break;
+				positions.push(grid[down].attr);
+			}
+		}
+		return positions;
+	}
+	topOpenBoxes = (grid, attr, y) => {
+		let positions = [];
+		for ( let i = 1; i < 4; i++ ) {
+			let top = attr - (10 * i);
+			if(top >= parseInt('0' + y)){
+				if(grid[parseInt(top)].status > 1) break;
+				positions.push(grid[top].attr);
+			}
+		}
+		return positions;
 	}
 }
