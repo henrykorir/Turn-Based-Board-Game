@@ -12,10 +12,13 @@ export default class Model{
 		};
 		this.bindUserChanged = this.bindUserChanged.bind(this);
 	}
-	bindUserChanged(callback){
+	bindUserChanged = ( callback ) => {
 		this.onPlayerChanged = callback;
 	}
 	set grid(grid){
+	}
+	get grid(){
+		return this._state.grid;
 	}
 	getGrid(){
 		return this._state.grid;
@@ -38,7 +41,7 @@ export default class Model{
 	}
 	set currentPlayer(player){
 		this._state.currentPlayer = player;
-		this.onPlayerChanged(this._state);
+		this.onPlayerChanged(player);
 	}
 	get currentPlayer(){
 		return this._state.currentPlayer;

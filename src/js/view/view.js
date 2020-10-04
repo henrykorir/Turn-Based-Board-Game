@@ -2,6 +2,7 @@
 export default class View{
 	constructor(){
 		this.createBoard();
+		this.showNextPaths = this.showNextPaths.bind(this);
 	}
 	
 	createBoard = () => {
@@ -29,6 +30,7 @@ export default class View{
 				.html('<div id=weapon'+ (weapon.id + 1) + ' class ="player smoothmove"><img src = ' + ( weapon.id == 0 ? "../../assets/weapon1.png width = 32 height = 32 /> " : "../../assets/weapon2.png width = 34 height = 34 />" )+'</div>');
 			}
 		}
+		this.currentPlayer = data.currentPlayer;
 	}
 	
 	getCurrentPlayer = ( player ) => {
@@ -38,28 +40,34 @@ export default class View{
 	movePlayer = ( handler ) =>{
 		for( let id = 0; id < 100; id++ ){
 			let attr = id < 10 ? ('0' + id ): ("" + id);
-			$('*[data-gridpos="'+ attr.trim() +'"]').on("click", () =>{
-				//console.log("src = ", this.currentPlayer.box.attr, "dest = ", $(event.target).attr("data-gridpos"));
+			$(`*[data-gridpos=${ attr.trim() }]`).on("click", () =>{
 				if($(event.target).hasClass("flashing")){
 					let midY = $(event.target).position().top += ( $(event.target).width() / 2 );
 					let midX = $(event.target).position().left += ( $(event.target).width() / 2 );
-					let player = $("#player" + (this.currentPlayer.id + 1));
+					let player = $('#player' + ( this.currentPlayer.id + 1 ));
 					player.css(
 						{
-							"top":midY - ( 0.5 * player.width() ), 
-							"left":midX -( 0.5 * player.width() )
+							"top" : midY - ( 0.5 * player.width() ), 
+							"left": midX - ( 0.5 * player.width() )
 						}
 					);
-					$("#board div").removeClass('flashing');
 					handler(this.currentPlayer, $(event.target).attr("data-gridpos"));
+					$("#board div").removeClass('flashing');
 				}
 			});
 		}
 	}
 	
-	showNextPaths = ( paths ) =>{
-		paths.forEach(path =>{
-			$('*[data-gridpos="'+ path +'"]').addClass('flashing');
-		});
+	showNextPaths = ( paths ) => {
+		console.log(this.currentPlayer);
+		for(let path of paths){
+		//paths.forEach(path =>{
+			//console.log(path);
+			$(`*[data-gridpos=${ path }]`).addClass('flashing');
+		//});
+		}
+		for(let path of paths){
+			console.log( "path = ", path, $(`*[data-gridpos=${ path }]`).hasClass("flashing"));
+		}
 	}
 } 
