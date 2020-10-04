@@ -8,23 +8,24 @@ function getRandomInt(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive 
 }
-
 export default class Controller{
 	constructor(model, view){
 		this._model = model;
 		this._view = view;
 		
 		this.init = this.init.bind(this);
-		this._view.movePlayer(this.handleMovingPlayer);
+		this._model.bindUserChanged(this.onPlayerChanged);
+		
 	}
-	init(){
-		this.createBoard()
-		.createBarriers()
-		.createPlayers()
-		.createWeapons();
-		console.log(this._model.state);
+	init = () => {
+		this.createBoard().createBarriers().createPlayers().createWeapons();
+		this._view.placeObjects(this._model.state);
+		this._model.currentPlayer = this._model.state.players[0];
+		this._view.movePlayer(this.onPlayerMoved);
+		
+		this.onPlayerChanged(this._model.state);
 	}
-	createBoard(){
+	createBoard = () => {
 		let grid = [];
 		let index = 0;
 		for(let i = 0; i < 10; i++){
@@ -37,89 +38,99 @@ export default class Controller{
 		this._model.setGrid(grid);
 		return this;
 	}
-	createBarriers(){
-		let index, grid = this._model.grid;
+	createBarriers = () => {
+		let index, grid = [...this._model.state.grid];
 		for(let n = 1; n <= 12; n++){
 		/*1. generate random index*/
 		/*2. use the index to retrive a square in the grid*/
 		/*3a. if the square is occupied got to 1*/
 			while(((index = getRandomInt(0,99)) == grid[index].id) && grid[index].status != 0){};
 		/*3b  otherwise set the box as occupied*/
-			this._model.grid[index].status = 1;
-			this._model.setBarrier(this._model.grid[index]);
+			this._model.state.grid[index].status = 2;
+			this._model.setBarrier(this._model.state.grid[index]);
 			//barriers.push(new Box(grid[index].id, grid[index].attr, this._model.grid[index].status, grid[index].position));
-
-			
 		}
-		
 		return this;
 	}
-	createPlayers(){
-		let index, grid = this._model.grid;
+	createPlayers = () => {
+		let index, grid = [...this._model.state.grid];
 		for(let i = 0; i < 2; i++){
 		/*1. generate random index*/
 		/*2. use the index to retrive a square in the grid*/
 		/*3a. if the square is occupied got to 1*/
 			while(((index = getRandomInt(0,99)) == grid[index].id) && grid[index].status != 0){};
 		/*3b. otherwise set the box as occupied*/
-			this._model.grid[index].status = 3;
+			this._model.state.grid[index].status = 3;
 		/*3c. create the item*/
-			let weapon = new Weapon(i, ((i < 2) ? "pawn" : "knight"),grid[index].position,50 *( i + 1 ));
+			let weapon = new Weapon(i, this._model.state.grid[index],((i < 2) ? "pawn" : "knight"),grid[index].position,50 *( i + 1 ));
+			weapon.isTaken = true;
 			this._model.setWeapon(weapon);
 			this._model.setPlayer(new Player(i,grid[index],grid[index].position,100, weapon));
 		}
-		this._model.currentPlayer = this._model.players[0];
 		return this;
 	}
-	createWeapons(){
-		let index, grid = this._model.grid;
+	createWeapons = () => {
+		let index, grid = [...this._model.state.grid];
 		for(let i = 2; i < 4; i++){
 		/*1. generate random index*/
 		/*2. use the index to retrive a square in the grid*/
 		/*3a. if the square is occupied got to 1*/
 			while(((index = getRandomInt(0,99)) == grid[index].id) && grid[index].status != 0){};
 		/*3b  otherwise set the box as occupied*/
-			this._model.grid[index].status = 2;
+			this._model.state.grid[index].status = 1;
 		/*4  repeat until count is 12*/
-			this._model.setWeapon(new Weapon(i, ((i < 3) ? "bishop" : "queen"),grid[index].position,50 *( i + 1 )));
+			this._model.setWeapon(new Weapon(i, this._model.state.grid[index],((i < 3) ? "bishop" : "queen"),grid[index].position,50 *( i + 1 )));
 		}
 		return this;
 	}
-	handleMovingPlayer = attr =>{
-		console.log("Update");
-		/*1. move current player and then choose thenext player*/
-		for(let index in this._model.grid){
-			if(this._model.grid[index].attr.trim() == attr.trim()){
-				this._model.grid[index].status = 3;
-				this._model.currentPlayer.box = attr;
-				let id = this._model.currentPlayer.id;
-				//this._model.players[id].box = attr;
-				//this._model.currentPlayer = (id == 0) ? this._model.players[1] :  this._model.players[0];
-				break;
-			}
-		}
-		
-		/*2. */
 	
+	onPlayerMoved = ( player , dest ) =>{
+		let src = player.box.attr;
+		/*1. move current player and then choose the next player*/
+		this._model.state.grid[player.id].status = 0; //set source  box as empty
+		this._model.state.grid[parseInt(dest)].status = 3; //set destination box as occupied
+		console.log(this._model.state.players, player);
+		this._model.state.players[player.id].box = this._model.state.grid[parseInt(dest)];
+		this._model.currentPlayer = (player.id == 0) ? this._model.players[1] :  this._model.players[0];
 	}
-	
-	legalBoxes(attr){
+	onPlayerChanged = ( state ) =>{
+		let attr = state.currentPlayer.box.attr;
 		let pos =  parseInt(attr);
 		let x = attr.charAt(0);
 		let y = attr.charAt(1);
 		let active = []; //open slot for player to move to
-				
+		let grid = [...state.grid];
 		for(let i = 1; i < 4; i++){
-			 let right = pos + i;
-			 let left = pos - i;
-			 let down = pos + (10 * i);
-			 let top = pos - (10 * i);
-			if(right <= parseInt(x + '9')) active.push((right < 10 ? '0' + right : right));
-			if(down <= parseInt('9' + y)) active.push((down < 10 ? '0' + down : down));
-			if(left >= parseInt(x + '0')) active.push((left < 10 ? '0' + left : left));
-			if(top >= parseInt('0' + y)) active.push((top < 10 ? '0' + top : top));
+			let right = pos + i;
+			let left = pos - i;
+			let down = pos + (10 * i);
+			let top = pos - (10 * i);
+			if(right <= parseInt(x + '9')){
+				if(grid[right].status < 2){
+					//console.log("right",right, grid[right]);
+					active.push(grid[right].attr);
+				}
+			}
+			if(down <= parseInt('9' + y)){
+				if(grid[down].status < 2) {
+					//console.log("down",down, grid[down]);
+					active.push(grid[down].attr);
+				}
+			}
+			if(left >= parseInt(x + '0')){
+				if(grid[left].status < 2){
+					//console.log("left",left, grid[left]);
+					active.push(grid[left].attr);
+				}
+			}
+			if(top >= parseInt('0' + y)){
+				if(grid[top].status < 2){
+					//console.log("top",top, grid[top]);
+					active.push(grid[top].attr);
+				}
+			}
 		}
-		this._view.probableNextMoves(active);
-		this._model.probableNextMoves = active;
+		this._view.getCurrentPlayer(state.currentPlayer);
+		this._view.showNextPaths(active);
 	}
 }

@@ -10,8 +10,14 @@ export default class Model{
 			weapons: [],
 			barriers: [],
 		};
+		this.bindUserChanged = this.bindUserChanged.bind(this);
 	}
-	get grid(){
+	bindUserChanged(callback){
+		this.onPlayerChanged = callback;
+	}
+	set grid(grid){
+	}
+	getGrid(){
 		return this._state.grid;
 	}
 	
@@ -32,6 +38,7 @@ export default class Model{
 	}
 	set currentPlayer(player){
 		this._state.currentPlayer = player;
+		this.onPlayerChanged(this._state);
 	}
 	get currentPlayer(){
 		return this._state.currentPlayer;
@@ -55,16 +62,16 @@ export default class Model{
 		return this._state.currentWeapon;
 	}
 	set setWeapons(weapon){
-		this._state.weapons = (this._state.weapons || []).push(weapon);
+		this._state.weapons.push(weapon);
 	}
 	set weapons(weapons){
-		this._state.weapons = weapons.slice() || [];
+		this._state.weapons = weapons.slice();
 	}
 	get weapons(){
 		return this._state.weapons;
 	}
 	set propableNextMoves(slots){
-		this._state.slots = slots.slice() || [];
+		this._state.slots = slots.slice();
 	}
 	get propableNextMoves(){
 		return this._state.slots;
@@ -76,7 +83,7 @@ export default class Model{
 		return this._state;
 	}
 	setGrid(grid){
-		this._state.grid = grid;
+		this._state.grid = [...grid];
 	}
 	setBarrier(barrier){
 		this._state.barriers.push(barrier);

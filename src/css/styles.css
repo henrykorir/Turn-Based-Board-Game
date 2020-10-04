@@ -22,24 +22,29 @@ header {
 	display: flex;
 }
 
-#player
+.player
 {
-	width: 32px;
-	height: 32px;
-	background-color: red;
+	width: 48px;
+	height: 48px;
+	/*background-color: green;*/
+	
 	position: absolute;
-	border-radius: 50%;
+	/*border-radius: 50%;*/
 	z-index: 10;
-	top:39px;
-	left:39px;
-}
 
+}
+.barrier {
+    background-image: url(../assets/barrier.png);
+    background-size: 110%;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
 span.icon
 {
 	display: block;
 	padding-top: 2px;
 	padding-left: 3px;
-	color:white;
+	color:black;
 	font-size:150%;
 }
 .tile {
@@ -48,19 +53,30 @@ span.icon
 	border: 1px solid #dfdfde;
 }
 
-/*
-.legal:hover
-{
-	background-color: white;
-	-webkit-box-shadow: 0px 0px 25px 10px #cdd3f6;
-	box-shadow: 0px 0px 25px 10px #cdd3f6;
-	border-radius: 7px;
-}
-*/
 .legal
 {
 	-webkit-box-shadow: inset 0px 0px 5px 5px #000000;
 	box-shadow: inset 0px 0px 5px 5px #000000;
+}
+@keyframes pulse {
+	0% {
+		transform: scale(0.95);
+		box-shadow: inset 0px 0 7px #5e72e4;
+	}
+
+	70% {
+		transform: scale(1);
+		box-shadow: inset 0px 0 7px #5e72e4;
+	}
+
+	100% {
+		transform: scale(0.95);
+		box-shadow: inset 0px 0 7px #5e72e4;
+	}
+}
+
+.flashing {
+	animation: pulse 1200ms infinite;
 }
 .smoothmove
 {

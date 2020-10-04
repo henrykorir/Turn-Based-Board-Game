@@ -1,10 +1,13 @@
-import Position from './Position.js';
+import Position from './position.js';
+import Box from './box.js';
 export default class Weapon{
-	constructor(id, name, position, damage){
+	constructor(id, box, name, position, damage){
 		this._id = id;
+		this._box = box;
 		this._name = name;
 		this._position = position;
 		this._damage = damage;
+		this._isTaken = false;
 	}
 	set id(id){
 		this._id = id;
@@ -12,7 +15,12 @@ export default class Weapon{
 	get id(){
 		return this._id;
 	}
-	
+	set box(box){
+		this._box = box;
+	}
+	get box(){
+		return this._box;
+	}
 	set name(name){
 		this._name = name;
 	}
@@ -30,5 +38,11 @@ export default class Weapon{
 	}
 	get damage(){
 		return this._damage;
+	}
+	set isTaken(isTaken){
+		this._isTaken = isTaken;
+	}
+	get isTaken(){
+		return this._isTaken;
 	}
 }
