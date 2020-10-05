@@ -1,4 +1,6 @@
-
+/**
+*
+*/
 export default class View{
 	constructor(){
 		this.createBoard();
@@ -22,7 +24,8 @@ export default class View{
 		
 		for(let player of data.players){
 			$('*[data-gridpos="'+ player.box.attr.trim() +'"]')
-			.html('<div id=player' + (player.id + 1) + ' class ="player smoothmove"><img src = ' + ( player.id == 0 ? "../../assets/player1.png width = 32 height = 32 /> " : "../../assets/player2.png width = 34 height = 34 />" )+'</div>');
+			.html(
+					'<div id=player' + (player.id + 1) + ' class ="player smoothmove"><img src = ' + ( player.id == 0 ? "../../assets/player1.png width = 32 height = 32 /> " : "../../assets/player2.png width = 34 height = 34 />" )+'</div>');
 		}
 		for(let weapon of data.weapons){
 			if( !weapon.isTaken ){
@@ -42,6 +45,7 @@ export default class View{
 			let attr = id < 10 ? ('0' + id ): ("" + id);
 			$(`*[data-gridpos=${ attr.trim() }]`).on("click", () =>{
 				if($(event.target).hasClass("flashing")){
+					event.preventDefault();
 					let midY = $(event.target).position().top += ( $(event.target).width() / 2 );
 					let midX = $(event.target).position().left += ( $(event.target).width() / 2 );
 					let player = $('#player' + ( this.currentPlayer.id + 1 ));
@@ -52,22 +56,15 @@ export default class View{
 						}
 					);
 					handler(this.currentPlayer, $(event.target).attr("data-gridpos"));
-					$("#board div").removeClass('flashing');
 				}
 			});
 		}
 	}
 	
 	showNextPaths = ( paths ) => {
-		console.log(this.currentPlayer);
-		for(let path of paths){
-		//paths.forEach(path =>{
-			//console.log(path);
-			$(`*[data-gridpos=${ path }]`).addClass('flashing');
-		//});
-		}
-		for(let path of paths){
-			console.log( "path = ", path, $(`*[data-gridpos=${ path }]`).hasClass("flashing"));
-		}
+		$("#board div").removeClass('flashing');
+		paths.forEach(path =>{
+			$(`*[data-gridpos=${ path }]`).toggleClass('flashing');
+		});
 	}
 } 

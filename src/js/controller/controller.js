@@ -8,6 +8,9 @@ function getRandomInt(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive 
 }
+/**
+*
+*/
 export default class Controller{
 	constructor(model, view){
 		this._model = model;
@@ -78,10 +81,10 @@ export default class Controller{
 		/*1. generate random index*/
 		/*2. use the index to retrive a square in the grid*/
 		/*3a. if the square is occupied got to 1*/
-			while(((index = getRandomInt(0,99)) == grid[index].id) && grid[index].status != 0){};
+		/*1,2,3a*/	while(((index = getRandomInt(0,99)) == grid[index].id) && grid[index].status != 0){};
 		/*3b  otherwise set the box as occupied*/
 			this._model.state.grid[index].status = 1;
-		/*4  repeat until count is 12*/
+		/*4 */
 			this._model.setWeapon(new Weapon(i, this._model.state.grid[index],((i < 3) ? "bishop" : "queen"),grid[index].position,50 *( i + 1 )));
 		}
 		return this;
@@ -98,6 +101,7 @@ export default class Controller{
 	}
 	
 	onPlayerChanged = ( player ) =>{
+		console.log(this.model.state.grid);
 		let attr = player.box.attr;
 		let pos =  parseInt(attr);
 		let x = attr.charAt(0);
@@ -114,6 +118,10 @@ export default class Controller{
 		
 		return;
 	}
+/****************************************************************************
+* The functions below determines the next posible positions to move to		*
+* of the current player														*
+*****************************************************************************/	
 	rightOpenBoxes = (grid, attr, x) => {
 		let positions = [];
 		for(let i = 1; i < 4; i++){
