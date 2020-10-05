@@ -41,7 +41,7 @@ export default class Model{
 	}
 	set currentPlayer(player){
 		this._state.currentPlayer = player;
-		this.onPlayerChanged(player);
+		this.onPlayerChanged(this._state.currentPlayer);
 	}
 	get currentPlayer(){
 		return this._state.currentPlayer;
