@@ -38,6 +38,7 @@ export default class View{
 	
 	getCurrentPlayer = ( player ) => {
 		this.currentPlayer =  player;
+		console.log(player.box);
 	}
 	
 	movePlayer = ( handler ) =>{
@@ -45,7 +46,7 @@ export default class View{
 			let attr = id < 10 ? ('0' + id ): ("" + id);
 			$(`*[data-gridpos=${ attr.trim() }]`).on("click", () =>{
 				if($(event.target).hasClass("flashing")){
-					event.preventDefault();
+					event.stopPropagation();
 					let midY = $(event.target).position().top += ( $(event.target).width() / 2 );
 					let midX = $(event.target).position().left += ( $(event.target).width() / 2 );
 					let player = $('#player' + ( this.currentPlayer.id + 1 ));
@@ -55,6 +56,7 @@ export default class View{
 							"left": midX - ( 0.5 * player.width() )
 						}
 					);
+					event.preventDefault();
 					handler(this.currentPlayer, $(event.target).attr("data-gridpos"));
 				}
 			});

@@ -93,7 +93,7 @@ export default class Controller{
 	onPlayerMoved = ( player , dest ) =>{
 		/*1. move current player and then choose the next player*/
 		let index = parseInt(dest);
-		this._model.grid[player.id].status = 0; //set source  box as empty
+		this._model.grid[player.box.id].status = 0; //set source  box as empty
 		this._model.grid[index].status = 3; //set destination box as occupied
 		this._model.players[player.id].box = this._model.grid[index];
 		//Below is the turn taking point which causes the onPlayerChanged() callback to be fired
@@ -101,7 +101,6 @@ export default class Controller{
 	}
 	
 	onPlayerChanged = ( player ) =>{
-		console.log(this.model.state.grid);
 		let attr = player.box.attr;
 		let pos =  parseInt(attr);
 		let x = attr.charAt(0);
@@ -113,9 +112,8 @@ export default class Controller{
 			...this.downOpenBoxes(grid, pos, y),
 			...this.topOpenBoxes(grid, pos, y)
 		]; //open boxes for player to move to
-		this._view.showNextPaths(active);
 		this._view.getCurrentPlayer( player );
-		
+		this._view.showNextPaths(active);
 		return;
 	}
 /****************************************************************************
