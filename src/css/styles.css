@@ -7,45 +7,47 @@ body {
 header {
 	margin-bottom: 50px;
 }
-
 .container {
 	margin: 0 auto;
-	width: 600px;
-	height: 600px;
+	width: 560px;
+	height: 560px;
 	display: grid;
-	grid-template-columns: repeat(10, 64px);
+	grid-template-columns: repeat(10, 56px);
+	grid-template-rows: repeat(10, 56px);
 }
 
-.container div {
-	justify-content: center;
-	align-items: center;
-	display: flex;
+.player1{
+	background-image: url(../assets/player1.png);
 }
-
-.player
-{
-	width: 48px;
-	height: 48px;
-	/*background-color: green;*/
-	
-	position: absolute;
-	/*border-radius: 50%;*/
-	z-index: 10;
-
+.player2{
+	background-image: url(../assets/player2.png);
 }
 .barrier {
     background-image: url(../assets/barrier.png);
-    background-size: 110%;
+}
+.weapon1{
+	background-image: url(../assets/weapon1.png);
+}
+.weapon2{
+	background-image: url(../assets/weapon2.png);
+}
+.weapon3{
+	background-image: url(../assets/weapon3.png);
+}
+.weapon4{
+	background-image: url(../assets/weapon4.png);
+}
+
+.barrier , 
+.player1, 
+.player2, 
+.weapon1, 
+.weapon2, 
+.weapon3, 
+.weapon4{
+	background-size: 110%;
     background-position: center center;
     background-repeat: no-repeat;
-}
-span.icon
-{
-	display: block;
-	padding-top: 2px;
-	padding-left: 3px;
-	color:black;
-	font-size:150%;
 }
 .tile {
 	background-color: #fff;
@@ -53,11 +55,6 @@ span.icon
 	border: 1px solid #dfdfde;
 }
 
-.legal
-{
-	-webkit-box-shadow: inset 0px 0px 5px 5px #000000;
-	box-shadow: inset 0px 0px 5px 5px #000000;
-}
 @keyframes pulse {
 	0% {
 		transform: scale(0.95);

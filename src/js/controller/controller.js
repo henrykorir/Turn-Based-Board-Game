@@ -23,7 +23,7 @@ export default class Controller{
 	
 	init = () => {
 		this.createBoard().createBarriers().createPlayers().createWeapons();
-		this._view.placeObjects(this._model.state);
+		this._view.renderObjects(this._model.state);
 		this._view.movePlayer(this.onPlayerMoved);
 	}
 	
@@ -107,20 +107,20 @@ export default class Controller{
 		let y = attr.charAt(1);
 		let grid = [...this._model.state.grid];
 		let active = [
-			...this.rightOpenBoxes(grid, pos, x),
-			...this.leftOpenBoxes(grid, pos, x),
-			...this.downOpenBoxes(grid, pos, y),
-			...this.topOpenBoxes(grid, pos, y)
+			...this.rightOpenPositions(grid, pos, x),
+			...this.leftOpenPositions(grid, pos, x),
+			...this.downOpenPositions(grid, pos, y),
+			...this.topOpenPositions(grid, pos, y)
 		]; //open boxes for player to move to
 		this._view.getCurrentPlayer( player );
-		this._view.showNextPaths(active);
+		this._view.renderNextPossiblePositions(active);
 		return;
 	}
 /****************************************************************************
 * The functions below determines the next posible positions to move to		*
 * of the current player														*
 *****************************************************************************/	
-	rightOpenBoxes = (grid, attr, x) => {
+	rightOpenPositions = (grid, attr, x) => {
 		let positions = [];
 		for(let i = 1; i < 4; i++){
 			let right = attr + i;
@@ -131,7 +131,7 @@ export default class Controller{
 		}
 		return positions;
 	}
-	leftOpenBoxes = (grid, attr, x) => {
+	leftOpenPositions = (grid, attr, x) => {
 		let positions = [];
 		for(let i = 1; i < 4; i++){
 			let left = attr - i;
@@ -142,7 +142,7 @@ export default class Controller{
 		}
 		return positions;
 	}
-	downOpenBoxes = (grid, attr, y) => {
+	downOpenPositions = (grid, attr, y) => {
 		let positions = [];
 		for(let i = 1; i < 4; i++){
 			let down = attr + (10 * i);
@@ -153,7 +153,7 @@ export default class Controller{
 		}
 		return positions;
 	}
-	topOpenBoxes = (grid, attr, y) => {
+	topOpenPositions = (grid, attr, y) => {
 		let positions = [];
 		for ( let i = 1; i < 4; i++ ) {
 			let top = attr - (10 * i);

@@ -4,7 +4,7 @@
 export default class View{
 	constructor(){
 		this.createBoard();
-		this.showNextPaths = this.showNextPaths.bind(this);
+		this.renderNextPossiblePositions = this.renderNextPossiblePositions.bind(this);
 	}
 	
 	createBoard = () => {
@@ -16,21 +16,17 @@ export default class View{
 		}
 	}
 	
-	placeObjects = ( data ) =>{
+	renderObjects = ( data ) =>{
 		for(let box of data.barriers){
-			//$('*[data-gridpos="'+ box.attr.trim() +'"]').css( 'background-color', '#333333');
 			$('*[data-gridpos="'+ box.attr.trim() +'"]').addClass('barrier');
 		}
 		
 		for(let player of data.players){
-			$('*[data-gridpos="'+ player.box.attr.trim() +'"]')
-			.html(
-					'<div id=player' + (player.id + 1) + ' class ="player smoothmove"><img src = ' + ( player.id == 0 ? "../../assets/player1.png width = 32 height = 32 /> " : "../../assets/player2.png width = 34 height = 34 />" )+'</div>');
+			$('*[data-gridpos="'+ player.box.attr.trim() +'"]').addClass('player' + (player.id + 1));
 		}
 		for(let weapon of data.weapons){
 			if( !weapon.isTaken ){
-				$('*[data-gridpos="'+ weapon.box.attr.trim() +'"]')
-				.html('<div id=weapon'+ (weapon.id + 1) + ' class ="player smoothmove"><img src = ' + ( weapon.id == 0 ? "../../assets/weapon1.png width = 32 height = 32 /> " : "../../assets/weapon2.png width = 34 height = 34 />" )+'</div>');
+				$('*[data-gridpos="'+ weapon.box.attr.trim() +'"]').addClass('weapon' +(weapon.id == 2  ? 1 : 2));
 			}
 		}
 		this.currentPlayer = data.currentPlayer;
@@ -38,24 +34,17 @@ export default class View{
 	
 	getCurrentPlayer = ( player ) => {
 		this.currentPlayer =  player;
-		console.log(player.box);
 	}
 	
 	movePlayer = ( handler ) =>{
 		for( let id = 0; id < 100; id++ ){
 			let attr = id < 10 ? ('0' + id ): ("" + id);
 			$(`*[data-gridpos=${ attr.trim() }]`).on("click", () =>{
+				console.log($(`*[data-gridpos=${ attr.trim() }]`).hasClass("weapon1"))
 				if($(event.target).hasClass("flashing")){
 					event.stopPropagation();
-					let midY = $(event.target).position().top += ( $(event.target).width() / 2 );
-					let midX = $(event.target).position().left += ( $(event.target).width() / 2 );
-					let player = $('#player' + ( this.currentPlayer.id + 1 ));
-					player.css(
-						{
-							"top" : midY - ( 0.5 * player.width() ), 
-							"left": midX - ( 0.5 * player.width() )
-						}
-					);
+					$('*[data-gridpos=' + (this.currentPlayer.box.attr) + ']').removeClass('player' + (this.currentPlayer.id + 1));
+					$(event.target).addClass('player' + (this.currentPlayer.id + 1));
 					event.preventDefault();
 					handler(this.currentPlayer, $(event.target).attr("data-gridpos"));
 				}
@@ -63,10 +52,10 @@ export default class View{
 		}
 	}
 	
-	showNextPaths = ( paths ) => {
+	renderNextPossiblePositions = ( paths ) => {
 		$("#board div").removeClass('flashing');
 		paths.forEach(path =>{
-			$(`*[data-gridpos=${ path }]`).toggleClass('flashing');
+			$(`div[data-gridpos=${ path }]`).toggleClass('flashing');
 		});
 	}
 } 
