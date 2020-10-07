@@ -40,6 +40,7 @@ export default class View{
 		for( let id = 0; id < 100; id++ ){
 			let attr = id < 10 ? ('0' + id ): ("" + id);
 			$(`*[data-gridpos=${ attr.trim() }]`).on("click", () =>{
+				console.log($(`*[data-gridpos=${ attr.trim() }]`).hasClass("weapon1"))
 				if($(event.target).hasClass("flashing")){
 					event.stopPropagation();
 					$('*[data-gridpos=' + (this.currentPlayer.box.attr) + ']').removeClass('player' + (this.currentPlayer.id + 1));
@@ -54,7 +55,7 @@ export default class View{
 	renderNextPossiblePositions = ( paths ) => {
 		$("#board div").removeClass('flashing');
 		paths.forEach(path =>{
-			$(`*[data-gridpos=${ path }]`).toggleClass('flashing');
+			$(`div[data-gridpos=${ path }]`).toggleClass('flashing');
 		});
 	}
 } 
