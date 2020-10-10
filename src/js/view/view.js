@@ -26,7 +26,7 @@ export default class View{
 		}
 		for(let weapon of data.weapons){
 			if( !weapon.isTaken ){
-				$('*[data-gridpos="'+ weapon.box.attr.trim() +'"]').addClass('weapon' +(weapon.id == 2  ? 1 : 2));
+				$('*[data-gridpos="'+ weapon.box.attr.trim() +'"]').addClass('weapon' +(weapon.id == 2  ? 1 : 4));
 			}
 		}
 		this.currentPlayer = data.currentPlayer;
@@ -36,14 +36,13 @@ export default class View{
 		this.currentPlayer =  player;
 	}
 	
-	movePlayer = ( handler ) =>{
+	movePlayer = ( handler ) => {
 		for( let id = 0; id < 100; id++ ){
 			let attr = id < 10 ? ('0' + id ): ("" + id);
 			$(`*[data-gridpos=${ attr.trim() }]`).on("click", () =>{
-				console.log($(`*[data-gridpos=${ attr.trim() }]`).hasClass("weapon1"))
 				if($(event.target).hasClass("flashing")){
 					event.stopPropagation();
-					$('*[data-gridpos=' + (this.currentPlayer.box.attr) + ']').removeClass('player' + (this.currentPlayer.id + 1));
+					$('*[data-gridpos=' + (this.currentPlayer.box.attr) + ']').toggleClass('player' + (this.currentPlayer.id + 1));
 					$(event.target).addClass('player' + (this.currentPlayer.id + 1));
 					event.preventDefault();
 					handler(this.currentPlayer, $(event.target).attr("data-gridpos"));
@@ -54,7 +53,7 @@ export default class View{
 	
 	renderNextPossiblePositions = ( paths ) => {
 		$("#board div").removeClass('flashing');
-		paths.forEach(path =>{
+		paths.forEach( path => {
 			$(`div[data-gridpos=${ path }]`).toggleClass('flashing');
 		});
 	}

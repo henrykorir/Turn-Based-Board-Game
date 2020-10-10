@@ -8,6 +8,7 @@ function getRandomInt(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive 
 }
+
 /**
 *
 */
@@ -22,22 +23,22 @@ export default class Controller{
 	}
 	
 	init = () => {
-		this.createBoard().createBarriers().createPlayers().createWeapons();
+		this.createGrid().createBarriers().createPlayers().createWeapons();
 		this._view.renderObjects(this._model.state);
 		this._view.movePlayer(this.onPlayerMoved);
 	}
 	
-	createBoard = () => {
+	createGrid = () => {
 		let grid = [];
 		let index = 0;
-		for(let i = 0; i < 10; i++){
-			for(let j = 0; j < 10; j++){
+		for ( let i = 0 ; i < 10 ; i++ ) {
+			for ( let j = 0; j < 10; j++ ) {
 				let attr = " " + i + j;
 				grid.push(new Box(index, attr.trim(), 0, new Position(i, j)));
 				index++;
 			}
 		}
-		this._model.setGrid(grid);
+		this._model.setGrid( grid );
 		return this;
 	}
 	
@@ -51,14 +52,13 @@ export default class Controller{
 		/*3b  otherwise set the box as occupied*/
 			this._model.state.grid[index].status = 2;
 			this._model.setBarrier(this._model.state.grid[index]);
-			//barriers.push(new Box(grid[index].id, grid[index].attr, this._model.grid[index].status, grid[index].position));
 		}
 		return this;
 	}
 	
 	createPlayers = () => {
 		let index, grid = [...this._model.state.grid];
-		for(let i = 0; i < 2; i++){
+		for ( let i = 0 ; i < 2 ; i++ ) {
 		/*1. generate random index*/
 		/*2. use the index to retrive a square in the grid*/
 		/*3a. if the square is occupied got to 1*/
@@ -77,11 +77,11 @@ export default class Controller{
 	
 	createWeapons = () => {
 		let index, grid = [...this._model.state.grid];
-		for(let i = 2; i < 4; i++){
+		for ( let i = 2 ; i < 4 ; i++ ) {
 		/*1. generate random index*/
 		/*2. use the index to retrive a square in the grid*/
 		/*3a. if the square is occupied got to 1*/
-		/*1,2,3a*/	while(((index = getRandomInt(0,99)) == grid[index].id) && grid[index].status != 0){};
+		/*1,2,3a*/	while(((index = getRandomInt(0,99)) == grid[index].id) && grid[index].status != 0){}; //collision avoidance
 		/*3b  otherwise set the box as occupied*/
 			this._model.state.grid[index].status = 1;
 		/*4 */
@@ -100,7 +100,7 @@ export default class Controller{
 		this._model.currentPlayer = this._model.players[player.id == 0 ? 1 : 0]; 
 	}
 	
-	onPlayerChanged = ( player ) =>{
+	onPlayerChanged = ( player ) => {
 		let attr = player.box.attr;
 		let pos =  parseInt(attr);
 		let x = attr.charAt(0);
@@ -113,16 +113,16 @@ export default class Controller{
 			...this.topOpenPositions(grid, pos, y)
 		]; //open boxes for player to move to
 		this._view.getCurrentPlayer( player );
-		this._view.renderNextPossiblePositions(active);
-		return;
+		this._view.renderNextPossiblePositions( active );
 	}
+	
 /****************************************************************************
-* The functions below determines the next posible positions to move to		*
-* of the current player														*
+* The functions below determines the next posible positions to move 		*
+* the current player														*
 *****************************************************************************/	
-	rightOpenPositions = (grid, attr, x) => {
+	rightOpenPositions = ( grid, attr, x ) => {
 		let positions = [];
-		for(let i = 1; i < 4; i++){
+		for( let i = 1; i < 4; i++ ) {
 			let right = attr + i;
 			if(right <= parseInt(x + '9')){
 				if(grid[right].status > 1) break;
@@ -133,7 +133,7 @@ export default class Controller{
 	}
 	leftOpenPositions = (grid, attr, x) => {
 		let positions = [];
-		for(let i = 1; i < 4; i++){
+		for( let i = 1; i < 4; i++ ){
 			let left = attr - i;
 			if(left >= parseInt(x + '0')){
 				if(grid[left].status > 1) break;
