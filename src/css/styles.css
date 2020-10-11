@@ -7,6 +7,7 @@ body {
 header {
 	margin-bottom: 50px;
 }
+
 .container {
 	margin: 0 auto;
 	width: 560px;
@@ -75,6 +76,7 @@ header {
 .flashing {
 	animation: pulse 1200ms infinite;
 }
+
 .smoothmove
 {
 	-webkit-transition: top 0.35s ease-in-out, left 0.35s ease-in-out;
