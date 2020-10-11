@@ -36,9 +36,9 @@ export default class View{
 		this.currentPlayer =  player;
 	}
 	
-	movePlayer = ( handler ) => {
+	setClickListener = ( handler ) => {
 		for( let id = 0; id < 100; id++ ){
-			let attr = id < 10 ? ('0' + id ): ("" + id);
+			let attr = ( id < 10 ) ? ('0' + id ): ("" + id);
 			$(`*[data-gridpos=${ attr.trim() }]`).on("click", () =>{
 				if($(event.target).hasClass("flashing")){
 					event.stopPropagation();

@@ -25,7 +25,7 @@ export default class Controller{
 	init = () => {
 		this.createGrid().createBarriers().createPlayers().createWeapons();
 		this._view.renderObjects(this._model.state);
-		this._view.movePlayer(this.onPlayerMoved);
+		this._view.setClickListener(this.onPlayerMoved);
 	}
 	
 	createGrid = () => {
