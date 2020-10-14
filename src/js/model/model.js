@@ -52,6 +52,9 @@ export default class Model{
 	get currentBox(){
 		return this._state.currentBox;
 	}
+	takeWeapon(weapon){
+		this._state.weapons[weapon.id].isTaken = weapon.isTaken;
+	}
 	setWeapon(weapon){
 		this._state.weapons.push(weapon);
 	}

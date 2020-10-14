@@ -26,7 +26,8 @@ export default class View{
 		}
 		for(let weapon of data.weapons){
 			if( !weapon.isTaken ){
-				$('*[data-gridpos="'+ weapon.box.attr.trim() +'"]').addClass('weapon' +(weapon.id == 2  ? 1 : 4));
+				$('*[data-gridpos="'+ weapon.box.attr.trim() +'"]')
+				.addClass('weapon' +(weapon.id + 1));
 			}
 		}
 		this.currentPlayer = data.currentPlayer;
@@ -36,7 +37,16 @@ export default class View{
 		this.currentPlayer =  player;
 	}
 	
-	setClickListener = ( handler ) => {
+	rerenderWeaponAfterSwap = (currentWeapon, weaponToTake) => {
+		console.log(currentWeapon, weaponToTake);
+		let previousWeapon 	= currentWeapon.id + 1 ; 
+		let newWeapon 		= weaponToTake.id + 1; 
+		$(`*[data-gridpos=${ weaponToTake.box.attr.trim() }]`)
+		.removeClass(['weapon1', 'weapon2', 'weapon3', 'weapon4'])
+		.toggleClass('weapon' + previousWeapon);
+	}
+	
+	setBoxClickListener = ( handler ) => {
 		for( let id = 0; id < 100; id++ ){
 			let attr = ( id < 10 ) ? ('0' + id ): ("" + id);
 			$(`*[data-gridpos=${ attr.trim() }]`).on("click", () =>{
