@@ -26,6 +26,9 @@ header {
 .barrier {
     background-image: url(../assets/barrier.png);
 }
+.weapon{
+	content: "Weapon";
+}
 .weapon1{
 	background-image: url(../assets/weapon1.png);
 }

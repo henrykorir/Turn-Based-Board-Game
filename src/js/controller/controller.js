@@ -10,7 +10,7 @@ function getRandomInt(min, max) {
 }
 
 /**
-*
+* the game brain
 */
 export default class Controller{
 	constructor(model, view){
@@ -25,7 +25,7 @@ export default class Controller{
 	init = () => {
 		this.createGrid().createBarriers().createPlayers().createWeapons();
 		this._view.renderObjects(this._model.state);
-		this._view.setClickListener(this.onPlayerMoved);
+		this._view.setBoxClickListener(this.onPlayerMoved);
 	}
 	
 	createGrid = () => {
@@ -38,6 +38,7 @@ export default class Controller{
 				index++;
 			}
 		}
+		
 		this._model.setGrid( grid );
 		return this;
 	}
@@ -66,7 +67,7 @@ export default class Controller{
 		/*3b. otherwise set the box as occupied*/
 			this._model.state.grid[index].status = 3;
 		/*3c. create the item*/
-			let weapon = new Weapon(i, this._model.state.grid[index],((i < 2) ? "pawn" : "knight"),grid[index].position,50 *( i + 1 ));
+			let weapon = new Weapon(i, this._model.state.grid[index],((i < 2) ? "knife" : "weapon"),grid[index].position,50 *( i + 1 ));
 			weapon.isTaken = true;
 			this._model.setWeapon(weapon);
 			this._model.setPlayer(new Player(i,grid[index],grid[index].position,100, weapon));
@@ -85,22 +86,38 @@ export default class Controller{
 		/*3b  otherwise set the box as occupied*/
 			this._model.state.grid[index].status = 1;
 		/*4 */
-			this._model.setWeapon(new Weapon(i, this._model.state.grid[index],((i < 3) ? "bishop" : "queen"),grid[index].position,50 *( i + 1 )));
+			this._model.setWeapon(new Weapon(i, this._model.state.grid[index],((i < 3) ? "handle" : "scimitar"),grid[index].position,50 *( i + 1 )));
 		}
 		return this;
 	}
 	
-	onPlayerMoved = ( player , dest ) =>{
-		/*1. move current player and then choose the next player*/
+	onPlayerMoved = ( player , dest ) => {
+		
+		let grid = [...this._model.grid];
+		let square = grid.find(square => square.attr == dest);
+		let box = this.lookForWeapon(grid, player.box.position, square.position);
+		
+		if(box != null){
+			let weaponToTake = this._model.weapons.find(weapon => weapon.box.id == box.id);
+			weaponToTake.isTaken = true;
+			let currentWeapon = this._model.players[player.id].weapon;
+			currentWeapon.isTaken = false;
+			this._model.takeWeapon(currentWeapon);
+			this._model.players[player.id].weapon = weaponToTake;
+			this._view.rerenderWeaponAfterSwap(currentWeapon, weaponToTake);
+		}
+		
 		let index = parseInt(dest);
 		this._model.grid[player.box.id].status = 0; //set source  box as empty
 		this._model.grid[index].status = 3; //set destination box as occupied
 		this._model.players[player.id].box = this._model.grid[index];
+		
 		//Below is the turn taking point which causes the onPlayerChanged() callback to be fired
 		this._model.currentPlayer = this._model.players[player.id == 0 ? 1 : 0]; 
 	}
 	
 	onPlayerChanged = ( player ) => {
+		
 		let attr = player.box.attr;
 		let pos =  parseInt(attr);
 		let x = attr.charAt(0);
@@ -163,5 +180,33 @@ export default class Controller{
 			}
 		}
 		return positions;
+	}
+	
+	lookForWeapon = (grid, positionA, positionB) => {
+		
+		let box = null, start, end, x, y;
+		if((positionA.x === positionB.x)){ //x-axis
+			let start = (positionA.y > positionB.y) ? positionB.y : positionA.y;
+			let end = Math.abs(positionA.y - positionB.y);
+			for(let i = start; i <= ( start + end ); i++){
+				let index = parseInt("" + positionA.x + i );
+				if(grid[index].status == 1){
+					box = grid[index];
+					break;
+				}
+			}
+		}
+		else if(positionA.y === positionB.y){ // y-axis
+			let start = (positionA.x > positionB.x) ? positionB.x : positionA.x;
+			let end = Math.abs(positionA.x - positionB.x);
+			for(let i = start ; i <= ( start + end ); i++){
+				let index = parseInt("" + i + positionA.y );
+				if(grid[index].status == 1){
+					box = grid[index];
+					break;
+				}
+			}
+		}
+		return box;
 	}
 }
