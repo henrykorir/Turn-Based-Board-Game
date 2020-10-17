@@ -38,7 +38,7 @@ export default class Controller{
 				index++;
 			}
 		}
-		
+		console.log(grid);
 		this._model.setGrid( grid );
 		return this;
 	}
@@ -63,7 +63,7 @@ export default class Controller{
 		/*1. generate random index*/
 		/*2. use the index to retrive a square in the grid*/
 		/*3a. if the square is occupied got to 1*/
-			while(((index = getRandomInt(0,99)) == grid[index].id) && grid[index].status != 0){};
+			while(((index = getRandomInt(0,99)) == grid[index].id) && grid[index].status != 0 && this.isOtherPlayerAdjacent(grid, grid[index]) == true){};
 		/*3b. otherwise set the box as occupied*/
 			this._model.state.grid[index].status = 3;
 		/*3c. create the item*/
@@ -106,7 +106,7 @@ export default class Controller{
 			this._model.weapons[weaponToTake.id].isTaken = true;
 			this._model.players[player.id].weapon = this._model.weapons[weaponToTake.id];
 			
-			console.log(player.id, player.weapon,this._model.weapons);
+			//console.log(player.id, player.weapon,this._model.weapons);
 			this._view.rerenderWeaponAfterSwap(currentWeapon, weaponToTake);
 		}
 		
@@ -211,5 +211,18 @@ export default class Controller{
 			}
 		}
 		return box;
+	}
+	
+	isOtherPlayerAdjacent = (grid, position) => {
+		let x = position.x;
+		let y = position.y;
+		if(
+			((x + 1) <= 9 && grid[parseInt(`${x + 1}${y}`)].status == 3) || 
+			((x - 1) >= 0 && grid[parseInt(`${x - 1}${y}`)].status == 3) || 
+			((y + 1) <= 9 && grid[parseInt(`${x}${y + 1}`)].status == 3) || 
+			((y - 1) >= 0 && grid[parseInt(`${x}${y - 1}`)].status == 3)
+		)
+		return true;
+		return false;
 	}
 }

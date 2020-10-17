@@ -1,5 +1,5 @@
 import Position from './position.js';
-export default class Box{
+export default class Box {
 	constructor(id, attr, status, position){
 		this._id = id;
 		this._attr = attr;
