@@ -2,10 +2,9 @@ import Position from './position.js';
 import Weapon from './weapon.js';
 
 export default class Player{
-	constructor(id, box,position, points, weapon ){
+	constructor(id, box, points, weapon ){
 		this._id = id;
 		this._box = box;
-		this._position = position;
 		this._points = points;
 		this._weapon = weapon;
 	}
@@ -21,12 +20,7 @@ export default class Player{
 	get box(){
 		return this._box;
 	}
-	set position(position){
-		this._position = position;
-	}
-	get position(){
-		return this._position;
-	}
+	
 	set points(points){
 		this._points = points;
 	}
