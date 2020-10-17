@@ -38,11 +38,10 @@ export default class View{
 	}
 	
 	rerenderWeaponAfterSwap = (currentWeapon, weaponToTake) => {
-		console.log(currentWeapon, weaponToTake);
 		let previousWeapon 	= currentWeapon.id + 1 ; 
 		let newWeapon 		= weaponToTake.id + 1; 
 		$(`*[data-gridpos=${ weaponToTake.box.attr.trim() }]`)
-		.removeClass(['weapon1', 'weapon2', 'weapon3', 'weapon4'])
+		.removeClass( 'weapon' + newWeapon)
 		.toggleClass('weapon' + previousWeapon);
 	}
 	
@@ -50,11 +49,12 @@ export default class View{
 		for( let id = 0; id < 100; id++ ){
 			let attr = ( id < 10 ) ? ('0' + id ): ("" + id);
 			$(`*[data-gridpos=${ attr.trim() }]`).on("click", () =>{
+				$(`*[data-gridpos=${ attr.trim() }]`).removeClass("weapon1 weapon2 weapon3 weapon4");
 				if($(event.target).hasClass("flashing")){
-					event.stopPropagation();
-					$('*[data-gridpos=' + (this.currentPlayer.box.attr) + ']').toggleClass('player' + (this.currentPlayer.id + 1));
-					$(event.target).addClass('player' + (this.currentPlayer.id + 1));
-					event.preventDefault();
+					let playerClass = 'player' + (this.currentPlayer.id + 1)//get player css class
+					$('*[data-gridpos=' + (this.currentPlayer.box.attr) + ']').toggleClass(playerClass); //remove player from source box
+					$(event.target).removeClass(["weapon1", "weapon2", "weapon3", "weapon4"]);
+					$(event.target).toggleClass(playerClass);// place player on to destination box
 					handler(this.currentPlayer, $(event.target).attr("data-gridpos"));
 				}
 			});

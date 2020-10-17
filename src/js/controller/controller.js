@@ -67,10 +67,10 @@ export default class Controller{
 		/*3b. otherwise set the box as occupied*/
 			this._model.state.grid[index].status = 3;
 		/*3c. create the item*/
-			let weapon = new Weapon(i, this._model.state.grid[index],((i < 2) ? "knife" : "weapon"),grid[index].position,50 *( i + 1 ));
+			let weapon = new Weapon(i, this._model.state.grid[index] ,((i < 1) ? "knife" : "scissor"),50 *( i + 1 ));
 			weapon.isTaken = true;
 			this._model.setWeapon(weapon);
-			this._model.setPlayer(new Player(i,grid[index],grid[index].position,100, weapon));
+			this._model.setPlayer(new Player(i,grid[index],100, weapon));
 		}
 		this._model.currentPlayer = this._model.players[0];
 		return this;
@@ -86,7 +86,7 @@ export default class Controller{
 		/*3b  otherwise set the box as occupied*/
 			this._model.state.grid[index].status = 1;
 		/*4 */
-			this._model.setWeapon(new Weapon(i, this._model.state.grid[index],((i < 3) ? "handle" : "scimitar"),grid[index].position,50 *( i + 1 )));
+			this._model.setWeapon(new Weapon(i, this._model.state.grid[index],((i < 3) ? "handle" : "scimitar"),50 *( i + 1 )));
 		}
 		return this;
 	}
@@ -98,12 +98,15 @@ export default class Controller{
 		let box = this.lookForWeapon(grid, player.box.position, square.position);
 		
 		if(box != null){
-			let weaponToTake = this._model.weapons.find(weapon => weapon.box.id == box.id);
-			weaponToTake.isTaken = true;
+			let weaponToTake = this._model.weapons.find(weapon => weapon.box != null && weapon.box.id == box.id && weapon.isTaken == false);
 			let currentWeapon = this._model.players[player.id].weapon;
-			currentWeapon.isTaken = false;
-			this._model.takeWeapon(currentWeapon);
-			this._model.players[player.id].weapon = weaponToTake;
+		
+			this._model.weapons[currentWeapon.id].isTaken = false;
+			this._model.weapons[currentWeapon.id].box = box;
+			this._model.weapons[weaponToTake.id].isTaken = true;
+			this._model.players[player.id].weapon = this._model.weapons[weaponToTake.id];
+			
+			console.log(player.id, player.weapon,this._model.weapons);
 			this._view.rerenderWeaponAfterSwap(currentWeapon, weaponToTake);
 		}
 		
@@ -117,7 +120,7 @@ export default class Controller{
 	}
 	
 	onPlayerChanged = ( player ) => {
-		
+		//console.log(player.weapon);
 		let attr = player.box.attr;
 		let pos =  parseInt(attr);
 		let x = attr.charAt(0);
