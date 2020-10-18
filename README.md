@@ -9,11 +9,9 @@ During combat, the game works is as follows:
 - If the player chooses to defend themselves, they sustain 50% less damage than normal
 - As soon as the life points of a player (initially 100) falls to 0, they lose. A message appears and the game is over.
 ## Installation
-```
-git clone https://github.com/henrykorir/Turn-Based-Board-Game.git
-cd Turn-Based-Board-Game
-npm install
-gulp
-```
+1. `git clone https://github.com/henrykorir/Turn-Based-Board-Game.git` to clone the repo to local machine
+2. `cd Turn-Based-Board-Game` change to the game repo directory
+3. `npm install` install dependencies
+4. `gulp`run the game
 ## Usage
 ## License
