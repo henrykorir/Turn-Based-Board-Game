@@ -1,6 +1,8 @@
 # Turn Based Board Game
 An online game in which 2 players play each turn to compete. 
 ## Description
+> **The Project uses Model-View-Controller (MVC) framework** 
+
 If players cross over adjacent squares (horizontally or vertically), a battle begins.
 During combat, the game works as follows:
 - Each player attacks in turn
