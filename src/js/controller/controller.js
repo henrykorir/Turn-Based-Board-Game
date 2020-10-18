@@ -38,7 +38,7 @@ export default class Controller{
 				index++;
 			}
 		}
-		console.log(grid);
+		//console.log(grid);
 		this._model.setGrid( grid );
 		return this;
 	}
@@ -114,28 +114,67 @@ export default class Controller{
 		this._model.grid[player.box.id].status = 0; //set source  box as empty
 		this._model.grid[index].status = 3; //set destination box as occupied
 		this._model.players[player.id].box = this._model.grid[index];
-		
+		//if(this.isOtherPlayerAdjacent(grid, player.box.position))alert("Fight!");
 		//Below is the turn taking point which causes the onPlayerChanged() callback to be fired
 		this._model.currentPlayer = this._model.players[player.id == 0 ? 1 : 0]; 
 	}
 	
 	onPlayerChanged = ( player ) => {
-		//console.log(player.weapon);
-		let attr = player.box.attr;
-		let pos =  parseInt(attr);
-		let x = attr.charAt(0);
-		let y = attr.charAt(1);
-		let grid = [...this._model.state.grid];
-		let active = [
-			...this.rightOpenPositions(grid, pos, x),
-			...this.leftOpenPositions(grid, pos, x),
-			...this.downOpenPositions(grid, pos, y),
-			...this.topOpenPositions(grid, pos, y)
-		]; //open boxes for player to move to
-		this._view.getCurrentPlayer( player );
-		this._view.renderNextPossiblePositions( active );
+			let attr = player.box.attr;
+			let pos =  parseInt(attr);
+			let x = attr.charAt(0);
+			let y = attr.charAt(1);
+			let grid = [...this._model.state.grid];
+			let active = [
+				...this.rightOpenPositions(grid, pos, x),
+				...this.leftOpenPositions(grid, pos, x),
+				...this.downOpenPositions(grid, pos, y),
+				...this.topOpenPositions(grid, pos, y)
+			]; //open boxes for player to move to
+			this._view.getCurrentPlayer( player );
+			this._view.renderNextPossiblePositions( active );
+		//}
+	}
+	lookForWeapon = (grid, positionA, positionB) => {
+		
+		let box = null, start, end, x, y;
+		if((positionA.x === positionB.x)){ //x-axis
+			let start = (positionA.y > positionB.y) ? positionB.y : positionA.y;
+			let end = Math.abs(positionA.y - positionB.y);
+			for(let i = start; i <= ( start + end ); i++){
+				let index = parseInt("" + positionA.x + i );
+				if(grid[index].status == 1){
+					box = grid[index];
+					break;
+				}
+			}
+		}
+		else if(positionA.y === positionB.y){ // y-axis
+			let start = (positionA.x > positionB.x) ? positionB.x : positionA.x;
+			let end = Math.abs(positionA.x - positionB.x);
+			for(let i = start ; i <= ( start + end ); i++){
+				let index = parseInt("" + i + positionA.y );
+				if(grid[index].status == 1){
+					box = grid[index];
+					break;
+				}
+			}
+		}
+		return box;
 	}
 	
+	isOtherPlayerAdjacent = (grid, position) => {
+		let x = position.x;
+		let y = position.y;
+		if(
+			((x + 1) <= 9 && grid[parseInt(`${x + 1}${y}`)].status == 3) || 
+			((x - 1) >= 0 && grid[parseInt(`${x - 1}${y}`)].status == 3) || 
+			((y + 1) <= 9 && grid[parseInt(`${x}${y + 1}`)].status == 3) || 
+			((y - 1) >= 0 && grid[parseInt(`${x}${y - 1}`)].status == 3)
+		)
+		return true;
+		return false;
+	}
 /****************************************************************************
 * The functions below determines the next posible positions to move 		*
 * the current player														*
@@ -183,46 +222,5 @@ export default class Controller{
 			}
 		}
 		return positions;
-	}
-	
-	lookForWeapon = (grid, positionA, positionB) => {
-		
-		let box = null, start, end, x, y;
-		if((positionA.x === positionB.x)){ //x-axis
-			let start = (positionA.y > positionB.y) ? positionB.y : positionA.y;
-			let end = Math.abs(positionA.y - positionB.y);
-			for(let i = start; i <= ( start + end ); i++){
-				let index = parseInt("" + positionA.x + i );
-				if(grid[index].status == 1){
-					box = grid[index];
-					break;
-				}
-			}
-		}
-		else if(positionA.y === positionB.y){ // y-axis
-			let start = (positionA.x > positionB.x) ? positionB.x : positionA.x;
-			let end = Math.abs(positionA.x - positionB.x);
-			for(let i = start ; i <= ( start + end ); i++){
-				let index = parseInt("" + i + positionA.y );
-				if(grid[index].status == 1){
-					box = grid[index];
-					break;
-				}
-			}
-		}
-		return box;
-	}
-	
-	isOtherPlayerAdjacent = (grid, position) => {
-		let x = position.x;
-		let y = position.y;
-		if(
-			((x + 1) <= 9 && grid[parseInt(`${x + 1}${y}`)].status == 3) || 
-			((x - 1) >= 0 && grid[parseInt(`${x - 1}${y}`)].status == 3) || 
-			((y + 1) <= 9 && grid[parseInt(`${x}${y + 1}`)].status == 3) || 
-			((y - 1) >= 0 && grid[parseInt(`${x}${y - 1}`)].status == 3)
-		)
-		return true;
-		return false;
 	}
 }

@@ -56,6 +56,7 @@ export default class View{
 					let playerClass = 'player' + (this.currentPlayer.id + 1)//get player css class
 					$('*[data-gridpos=' + (this.currentPlayer.box.attr) + ']').toggleClass(playerClass); //remove player from source box
 					$(event.target).toggleClass(playerClass);// place player on to destination box
+					$("#board div").removeClass('flashing');
 					handler(this.currentPlayer, $(event.target).attr("data-gridpos"));
 				}
 			});
@@ -63,7 +64,6 @@ export default class View{
 	}
 	
 	renderNextPossiblePositions = ( paths ) => {
-		$("#board div").removeClass('flashing');
 		paths.forEach( path => {
 			$(`div[data-gridpos=${ path }]`).toggleClass('flashing');
 		});
