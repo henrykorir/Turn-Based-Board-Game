@@ -1,11 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title></title>
+		<title>Turn Based Board Game</title>
+		<style>
+			.modal{
+				display: block!important;
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0,0.75);
+				z-index: 1;
+			}
+			.modal-dialog{
+				position: relative;
+				width: 50%;
+				height: 90%;
+				margin: 0 auto;
+				margin-top: 2em;
+				background-color: #fff;
+				z-index: 2;
+			}
+			
+		</style>
 		<link rel="stylesheet" href="./css/styles.css" type="text/css" />
 	</head>
 	<body>
+		<div id="loader">
+		</div>
 		<div id="board" class="container"></div>
+		<div id="dashboard" class="modal">
+			<div class="modal-dialog">
+			</div>
+		</div>
 		<script type="text/javascript" src="./vendor/jquery-3.5.1.min.js"></script>
 		<script type="module" src="./js/index.js"></script>
 	</body>
