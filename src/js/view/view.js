@@ -18,15 +18,15 @@ export default class View{
 	
 	renderObjects = ( data ) =>{
 		for(let box of data.barriers){
-			$('*[data-gridpos="'+ box.attr.trim() +'"]').addClass('barrier');
+			$('div[data-gridpos="'+ box.attr.trim() +'"]').addClass('barrier');
 		}
 		
 		for(let player of data.players){
-			$('*[data-gridpos="'+ player.box.attr.trim() +'"]').addClass('player' + (player.id + 1));
+			$('div[data-gridpos="'+ player.box.attr.trim() +'"]').addClass('player' + (player.id + 1));
 		}
 		for(let weapon of data.weapons){
 			if( !weapon.isTaken ){
-				$('*[data-gridpos="'+ weapon.box.attr.trim() +'"]')
+				$('div[data-gridpos="'+ weapon.box.attr.trim() +'"]')
 				.addClass('weapon' +(weapon.id + 1));
 			}
 		}
@@ -40,9 +40,9 @@ export default class View{
 	rerenderWeaponAfterSwap = (currentWeapon, weaponToTake) => {
 		let previousWeapon 	= 'weapon' + (currentWeapon.id + 1) ; 
 		let newWeapon 		= 'weapon' + (weaponToTake.id + 1); 
-		console.log($(`*[data-gridpos=${ weaponToTake.box.attr.trim() }]`).attr('class'));
-		if(($(`*[data-gridpos=${ weaponToTake.box.attr.trim() }]`).hasClass("player1") == false) || ($(`*[data-gridpos=${ weaponToTake.box.attr.trim() }]`).hasClass("player2") == false)){
-			$(`*[data-gridpos=${ weaponToTake.box.attr.trim() }]`)
+		console.log($(`div[data-gridpos=${ weaponToTake.box.attr.trim() }]`).attr('class'));
+		if(($(`div[data-gridpos=${ weaponToTake.box.attr.trim() }]`).hasClass("player1") == false) || ($(`div[data-gridpos=${ weaponToTake.box.attr.trim() }]`).hasClass("player2") == false)){
+			$(`div[data-gridpos=${ weaponToTake.box.attr.trim() }]`)
 			.removeClass(newWeapon)
 			.toggleClass(previousWeapon);
 		}
@@ -51,13 +51,13 @@ export default class View{
 	setBoxClickListener = ( handler ) => {
 		for( let id = 0; id < 100; id++ ){
 			let attr = ( id < 10 ) ? ('0' + id ): ("" + id);
-			$(`*[data-gridpos=${ attr.trim() }]`).on("click", () =>{
+			$(`div[data-gridpos=${ attr.trim() }]`).on("click", () =>{
 				if($(event.target).hasClass("flashing")){
 					let playerClass = 'player' + (this.currentPlayer.id + 1)//get player css class
-					$('*[data-gridpos=' + (this.currentPlayer.box.attr) + ']').toggleClass(playerClass); //remove player from source box
+					$('div[data-gridpos=' + (this.currentPlayer.box.attr) + ']').toggleClass(playerClass); //remove player from source box
 					$(event.target).toggleClass(playerClass);// place player on to destination box
 					$("#board div").removeClass('flashing');
-					handler(this.currentPlayer, $(event.target).attr("data-gridpos"));
+					setTimeout(handler, 100, this.currentPlayer, $(event.target).attr("data-gridpos"));
 				}
 			});
 		}

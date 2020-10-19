@@ -114,7 +114,7 @@ export default class Controller{
 		this._model.grid[player.box.id].status = 0; //set source  box as empty
 		this._model.grid[index].status = 3; //set destination box as occupied
 		this._model.players[player.id].box = this._model.grid[index];
-		//if(this.isOtherPlayerAdjacent(grid, player.box.position))alert("Fight!");
+		if(this.isOtherPlayerAdjacent(grid, player.box.position))alert("Fight!");
 		//Below is the turn taking point which causes the onPlayerChanged() callback to be fired
 		this._model.currentPlayer = this._model.players[player.id == 0 ? 1 : 0]; 
 	}

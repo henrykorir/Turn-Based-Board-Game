@@ -23,7 +23,6 @@ export default class Model{
 	getGrid(){
 		return this._state.grid;
 	}
-	
 	get barriers(){
 		return this._state.barriers;
 	}
@@ -52,7 +51,6 @@ export default class Model{
 	get currentBox(){
 		return this._state.currentBox;
 	}
-	
 	setWeapon(weapon){
 		this._state.weapons.push(weapon);
 	}
@@ -92,14 +90,4 @@ export default class Model{
 	setBarrier(barrier){
 		this._state.barriers.push(barrier);
 	}
-	
-	swapWeapons(weaponA, weaponB){
-		console.log(this.weapons[weaponA.id], this.weapons[weaponB.id]);
-		let weapons = [...this._state.weapons]
-		weapons[weaponA.id] = weaponA;
-		weapons[weaponB.id] = weaponB;
-		//console.log(this._state.weapons);
-		this.weapons = weapons;
-	}
-	
 } 
