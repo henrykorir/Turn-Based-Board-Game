@@ -1,3 +1,13 @@
+html. body{
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
 body {
 	background-color: #ECF0F1;
 	padding: 30px 25%;
@@ -8,6 +18,26 @@ header {
 	margin-bottom: 50px;
 }
 
+ul{
+	flex-grow: 1;
+	list-style: none;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding: 0;
+}
+ul li{
+	width: 100%;
+}
+.rotateimg180 {
+  -webkit-transform:rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+ul li img{
+	width: 100%;
+}
 .container {
 	margin: 0 auto;
 	width: 560px;
@@ -117,6 +147,7 @@ header {
 	visibility: hidden;
 }
 .modal-dialog{
+	box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
 	position: relative;
 	width: 50%;
 	height: 90%;
@@ -124,4 +155,49 @@ header {
 	margin-top: 2em;
 	background-color: #fff;
 	z-index: 2;
+}
+
+.stage{
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+.red{
+	background-color: red;
+}
+.blue{
+	background-color: blue;
+	float: right;
+}
+.put-buttons-below{
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+.btn{
+	margin-top: 1em;
+	border-bottom: 0;
+}
+.button{
+	padding-top: 1em;
+	padding-bottom: 1em;
+	text-transform: uppercase;
+	margin-left: .5em;
+	margin-right: .5em;
+	cursor: pointer;
+	border-radius: 4px;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+#progress-bar{
+	width: 100%;
+	height: 1em;
+	background: green;
+	color: white;
+	text-align: center;
 }
