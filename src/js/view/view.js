@@ -57,7 +57,7 @@ export default class View{
 					$('div[data-gridpos=' + (this.currentPlayer.box.attr) + ']').toggleClass(playerClass); //remove player from source box
 					$(event.target).toggleClass(playerClass);// place player on to destination box
 					$("#board div").removeClass('flashing');
-					setTimeout(handler, 100, this.currentPlayer, $(event.target).attr("data-gridpos"));
+					setTimeout(handler, 150, this.currentPlayer, $(event.target).attr("data-gridpos"));
 				}
 			});
 		}
@@ -67,5 +67,9 @@ export default class View{
 		paths.forEach( path => {
 			$(`div[data-gridpos=${ path }]`).toggleClass('flashing');
 		});
+	}
+	
+	launchFightStage = () => {
+		$("#dashboard").css({'visibility':'visible'});
 	}
 } 
