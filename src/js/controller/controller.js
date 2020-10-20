@@ -63,7 +63,7 @@ export default class Controller{
 		/*1. generate random index*/
 		/*2. use the index to retrive a square in the grid*/
 		/*3a. if the square is occupied got to 1*/
-			while(((index = getRandomInt(0,99)) == grid[index].id) && grid[index].status != 0 && (this.isOtherPlayerAdjacent(grid, grid[index]) == true)){};
+			while(((index = getRandomInt(0,99)) == grid[index].id) && (grid[index].status  > 0) && (this.isOtherPlayerAdjacent(grid, grid[index]) == true)){};
 		/*3b. otherwise set the box as occupied*/
 			this._model.state.grid[index].status = 3;
 		/*3c. create the item*/
