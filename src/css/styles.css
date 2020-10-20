@@ -24,10 +24,16 @@ ul{
 	margin-top: 0;
 	margin-bottom: 0;
 	padding: 0;
+	padding-bottom: .5em;
+	
 }
 ul li{
 	width: 100%;
 }
+ ul:nth-of-type(2){
+	margin-left: 2px;
+}
+
 .rotateimg180 {
   -webkit-transform:rotate(180deg);
   -moz-transform: rotate(180deg);
@@ -150,7 +156,7 @@ ul li img{
 	box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
 	position: relative;
 	width: 50%;
-	height: 90%;
+	/*height: 90%;*/
 	margin: 0 auto;
 	margin-top: 2em;
 	background-color: #fff;
@@ -172,12 +178,6 @@ ul li img{
 .blue{
 	background-color: blue;
 	float: right;
-}
-.put-buttons-below{
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
 }
 .btn{
 	margin-top: 1em;
