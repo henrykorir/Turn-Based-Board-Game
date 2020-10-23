@@ -10,26 +10,30 @@
 		<div id="board" class="container"></div>
 		<div id="dashboard" class="modal">
 			<div class="modal-dialog">
-				<p>Fight Stage</p>
+				<div style="background: #000; padding-top:1em; border-bottom: 0; padding-bottom: 1em; color: white; font-weight: bold;">Fighting Stage</div>
 				<div class="stage">
-					<ul style="">
-						<li id="progress-bar" class="red">100%</li>
+					<ul>
+						<li class="progress"> 
+							<span id="progress-bar1" class="bar red">100%</span> 
+						</li>
 						<li>
 							<img src="./assets/player1.png" alt="Player 1" />
 						</li>
 						<li class="btn"> 
-							<div class="button" style="background-color: #3759a1">Attack</div>
-							<div class="button" style="background-color: #dc4839; margin-top: .5em">Defend</div>
+							<div id="player1Attack" class="button" style="background-color: #3759a1">Attack</div>
+							<div id="player1Defend" class="button" style="background-color: #dc4839; margin-top: .5em">Defend</div>
 						</li>
 					</ul>
-					<ul style="">
-						<li id="progress-bar" class="blue">100%</li>
+					<ul>
+						<li class="progress">
+							<span id="progress-bar2" class="bar blue">100%</span>
+						</li>
 						<li>
 							<img class="rotateimg180" src="./assets/player2.png" alt="Player 2" />
 						</li>
 						<li class="btn">
-							<div class="button" style="background-color: #dc4839">Attack</div>
-							<div class="button" style="background-color: #3759a1; margin-top: .5em">Defend</div>
+							<div id="player2Attack" class="button" style="background-color: #dc4839">Attack</div>
+							<div id="player2Defend" class="button" style="background-color: #3759a1; margin-top: .5em">Defend</div>
 						</li>
 					</ul>
 				</div>
