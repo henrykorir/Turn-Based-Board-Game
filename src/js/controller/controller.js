@@ -88,6 +88,7 @@ export default class Controller{
 		/*4 */
 			this._model.setWeapon(new Weapon(i, this._model.state.grid[index],((i < 3) ? "handle" : "scimitar"),50 *( i + 1 )));
 		}
+		console.log(this._model.state);
 		return this;
 	}
 	

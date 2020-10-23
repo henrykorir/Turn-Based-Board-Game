@@ -18,7 +18,7 @@ export default class View{
 	
 	renderObjects = ( data ) =>{
 		for(let box of data.barriers){
-			$('div[data-gridpos="'+ box.attr.trim() +'"]').addClass('barrier');
+			if(box.status == 2) $('div[data-gridpos="'+ box.attr.trim() +'"]').addClass('barrier');
 		}
 		
 		for(let player of data.players){
@@ -70,6 +70,20 @@ export default class View{
 	}
 	
 	launchFightStage = () => {
+		let w = 100, w1 = 100;
 		$("#dashboard").css({'visibility':'visible'});
+		$("#player1Attack").on('click', function(){
+			w -= 1;
+			let width = w + '%';
+			if(w >= 1)$("#progress-bar2").css({'width': width}).text(width);
+			else $("#progress-bar2").css({'width': 100 + "%", "background" : "#ddd"}).text("0%");
+			
+		});
+		$("#player2Attack").on('click', function(){
+			w1 -= 1;
+			let width = w1 + '%';
+			if(w1 >= 1)$("#progress-bar1").css({'width': width}).html(width);
+			else $("#progress-bar1").css({'width': 100 + "%", "background" : "#ddd"}).html("0%");
+		});
 	}
 } 
