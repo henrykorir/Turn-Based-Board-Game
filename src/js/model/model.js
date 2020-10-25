@@ -9,6 +9,7 @@ export default class Model{
 			players: [],
 			weapons: [],
 			barriers: [],
+			fighting: false,
 		};
 		this.bindUserChanged = this.bindUserChanged.bind(this);
 	}
@@ -40,7 +41,7 @@ export default class Model{
 	}
 	set currentPlayer(player){
 		this._state.currentPlayer = player;
-		this.onPlayerChanged(this._state.currentPlayer);
+		this.onPlayerChanged(this._state);
 	}
 	get currentPlayer(){
 		return this._state.currentPlayer;
@@ -84,10 +85,17 @@ export default class Model{
 	get state(){
 		return this._state;
 	}
+	
 	setGrid(grid){
 		this._state.grid = [...grid];
 	}
 	setBarrier(barrier){
 		this._state.barriers.push(barrier);
+	}
+	set fighting(bool){
+		this._state.fighting = bool;
+	}
+	get fighting(){
+		this._state.fighting;
 	}
 } 

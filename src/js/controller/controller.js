@@ -26,6 +26,7 @@ export default class Controller{
 		this.createGrid().createBarriers().createPlayers().createWeapons();
 		this._view.renderObjects(this._model.state);
 		this._view.setBoxClickListener(this.onPlayerMoved);
+		this._view.setFightingClickHandler(this.onFighting);
 	}
 	
 	createGrid = () => {
@@ -67,7 +68,7 @@ export default class Controller{
 		/*3b. otherwise set the box as occupied*/
 			this._model.state.grid[index].status = 3;
 		/*3c. create the item*/
-			let weapon = new Weapon(i, this._model.state.grid[index] ,((i < 1) ? "knife" : "scissor"),50 *( i + 1 ));
+			let weapon = new Weapon(i, this._model.state.grid[index] ,((i < 1) ? "knife" : "scissor"),10 );
 			weapon.isTaken = true;
 			this._model.setWeapon(weapon);
 			this._model.setPlayer(new Player(i,grid[index],100, weapon));
@@ -86,9 +87,10 @@ export default class Controller{
 		/*3b  otherwise set the box as occupied*/
 			this._model.state.grid[index].status = 1;
 		/*4 */
-			this._model.setWeapon(new Weapon(i, this._model.state.grid[index],((i < 3) ? "handle" : "scimitar"),50 *( i + 1 )));
+			let damage = 10 *( i + 1 );
+			this._model.setWeapon(new Weapon(i, this._model.state.grid[index],((i < 3) ? "handle" : "scimitar"),damage));
 		}
-		console.log(this._model.state);
+		console.log(this._model.state.weapons);
 		return this;
 	}
 	
@@ -116,30 +118,52 @@ export default class Controller{
 		this._model.grid[index].status = 3; //set destination box as occupied
 		this._model.players[player.id].box = this._model.grid[index];
 		if(this.isOtherPlayerAdjacent(grid, player.box.position)){
+			this._model.fighting = true;
 			this._view.launchFightStage();
 		}
 		//Below is the turn taking point which causes the onPlayerChanged() callback to be fired
 		this._model.currentPlayer = this._model.players[player.id == 0 ? 1 : 0]; 
 	}
 	
-	onPlayerChanged = ( player ) => {
-			let attr = player.box.attr;
-			let pos =  parseInt(attr);
-			let x = attr.charAt(0);
-			let y = attr.charAt(1);
-			let grid = [...this._model.state.grid];
-			let active = [
-				...this.rightOpenPositions(grid, pos, x),
-				...this.leftOpenPositions(grid, pos, x),
-				...this.downOpenPositions(grid, pos, y),
-				...this.topOpenPositions(grid, pos, y)
-			]; //open boxes for player to move to
-			this._view.getCurrentPlayer( player );
-			this._view.renderNextPossiblePositions( active );
-		//}
+	onPlayerChanged = ( state ) => {
+		let attr = state.currentPlayer.box.attr;
+		let pos =  parseInt(attr);
+		let x = attr.charAt(0);
+		let y = attr.charAt(1);
+		let grid = [...this._model.state.grid];
+		let active = [
+			...this.rightOpenPositions(grid, pos, x),
+			...this.leftOpenPositions(grid, pos, x),
+			...this.downOpenPositions(grid, pos, y),
+			...this.topOpenPositions(grid, pos, y)
+		]; //open boxes for player to move to
+		this._view.getCurrentPlayer( state.currentPlayer );
+		this._view.renderNextPossiblePositions( active );
+			
 	}
-	lookForWeapon = (grid, positionA, positionB) => {
+	
+	onFighting = ( action ) => {
+		let p1;
+		if(action == 1 || action == 3)
+			p1 = 0;
+		else 
+			p1 = 1;
 		
+		let p2 = (p1 == 0) ? 1 : 0;
+		
+		let damage = this._model.players[p1].weapon.damage;
+		let points = this._model.players[p2].points;
+		
+		points -= damage;
+		
+		this._model.players[p2].points = points;
+		
+		p2 = p2 + 1;
+		
+		this._view.renderPointsLevel( p2 , points );
+	}
+	
+	lookForWeapon = (grid, positionA, positionB) => {
 		let box = null, start, end, x, y;
 		if((positionA.x === positionB.x)){ //x-axis
 			let start = (positionA.y > positionB.y) ? positionB.y : positionA.y;
