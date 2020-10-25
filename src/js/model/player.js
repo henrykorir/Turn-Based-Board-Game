@@ -20,7 +20,6 @@ export default class Player{
 	get box(){
 		return this._box;
 	}
-	
 	set points(points){
 		this._points = points;
 	}

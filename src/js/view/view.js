@@ -11,7 +11,7 @@ export default class View{
 		for(let i = 0; i < 10; i++){
 			for(let j = 0; j < 10; j++){
 				let id = "" + i + j;
-				$('#board').append('<div class="tile smoothfade" data-gridpos = "' + id.trim() + '"></div>');
+				$('#board').append('<div class="box smoothfade" data-gridpos = "' + id.trim() + '"></div>');
 			}
 		}
 	}
@@ -69,21 +69,36 @@ export default class View{
 		});
 	}
 	
+	setFightingClickHandler = ( handler ) => {
+		$("#player1Attack, #player2Attack, #player1Defend, #player2Defend")
+		.click( ( event ) => {
+			let action; 
+			switch( event.target.id ){
+				case 'player1Attack':
+					action = 1;
+					break;
+				case 'player2Attack':
+					action = 2;
+					break;
+				case 'player1Defend':
+					action = 3;
+					break;
+				case 'player2Defend':
+					action = 4;
+					break;
+			}
+			handler( action );
+		});
+	}
 	launchFightStage = () => {
-		let w = 100, w1 = 100;
 		$("#dashboard").css({'visibility':'visible'});
-		$("#player1Attack").on('click', function(){
-			w -= 1;
-			let width = w + '%';
-			if(w >= 1)$("#progress-bar2").css({'width': width}).text(width);
-			else $("#progress-bar2").css({'width': 100 + "%", "background" : "#ddd"}).text("0%");
-			
-		});
-		$("#player2Attack").on('click', function(){
-			w1 -= 1;
-			let width = w1 + '%';
-			if(w1 >= 1)$("#progress-bar1").css({'width': width}).html(width);
-			else $("#progress-bar1").css({'width': 100 + "%", "background" : "#ddd"}).html("0%");
-		});
+	}
+	renderPointsLevel = ( id, level ) => {
+		let width = level + "%";
+		let progressbar = (id == 1) ? $('#progress-bar1') : $('#progress-bar2');
+		if(level >= 1)
+			progressbar.css({'width' : width}).text(width);
+		else 
+			progressbar.css({'width': 100 + "%", "background" : "#ddd"}).html("0%");
 	}
 } 
