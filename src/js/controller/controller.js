@@ -64,11 +64,16 @@ export default class Controller{
 		/*1. generate random index*/
 		/*2. use the index to retrive a square in the grid*/
 		/*3a. if the square is occupied got to 1*/
-			while(((index = getRandomInt(0,99)) == grid[index].id) && (grid[index].status  > 0) && (this.isOtherPlayerAdjacent(grid, grid[index]) == true)){};
+			while(
+					((index = getRandomInt(0,99)) == grid[index].id) && 
+					(grid[index].status  > 0) && 
+					(this.isOtherPlayerAdjacent(grid, grid[index]) == true)
+			){};
 		/*3b. otherwise set the box as occupied*/
 			this._model.state.grid[index].status = 3;
 		/*3c. create the item*/
-			let weapon = new Weapon(i, this._model.state.grid[index] ,((i < 1) ? "knife" : "scissor"),10 );
+			let damage = 10 *( i + 1 );
+			let weapon = new Weapon(i, this._model.state.grid[index] ,((i < 1) ? "knife" : "scissor"), damage );
 			weapon.isTaken = true;
 			this._model.setWeapon(weapon);
 			this._model.setPlayer(new Player(i,grid[index],100, weapon));
@@ -143,18 +148,27 @@ export default class Controller{
 	}
 	
 	onFighting = ( action ) => {
-		let p1;
+		let p1, p2, damage, points;
 		if(action == 1 || action == 3)
 			p1 = 0;
 		else 
 			p1 = 1;
 		
-		let p2 = (p1 == 0) ? 1 : 0;
-		
-		let damage = this._model.players[p1].weapon.damage;
-		let points = this._model.players[p2].points;
-		
-		points -= damage;
+		p2 = ( p1 == 0 ) ? 1 : 0;
+		switch( action ){
+			case 1:
+			case 2:
+				damage = this._model.players[p1].weapon.damage;
+				points = this._model.players[p2].points;
+				if( points == 100 ) points -= 10; //default damage
+				else points -= damage;
+				break;
+				
+			case 3:
+			case 4:
+				if( points != null ) points += ( 0.5 * damage );
+				break;
+		}
 		
 		this._model.players[p2].points = points;
 		
