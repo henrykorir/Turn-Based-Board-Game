@@ -171,6 +171,7 @@ ul li img{
 }
 .bar{
 	width: 100%;
+	max-width: 100%;
 	min-width: 1%;
 	background: green;
 	color: white;

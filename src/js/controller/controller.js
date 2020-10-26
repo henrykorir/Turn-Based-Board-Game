@@ -148,13 +148,10 @@ export default class Controller{
 	}
 	
 	onFighting = ( action ) => {
-		let p1, p2, damage, points;
-		if(action == 1 || action == 3)
-			p1 = 0;
-		else 
-			p1 = 1;
-		
-		p2 = ( p1 == 0 ) ? 1 : 0;
+		let p1, p2, damage, points, id;
+		let attack = false;
+		p1 = (action == 1 || action == 3) ? 0 : 1; //index of active player
+		p2 = ( p1 == 0 ) ? 1 : 0; //index of player to be faught
 		switch( action ){
 			case 1:
 			case 2:
@@ -162,19 +159,28 @@ export default class Controller{
 				points = this._model.players[p2].points;
 				if( points == 100 ) points -= 10; //default damage
 				else points -= damage;
+				attack = true;
 				break;
 				
 			case 3:
 			case 4:
-				if( points != null ) points += ( 0.5 * damage );
+				points = this._model.players[p1].points;
+				damage = this._model.players[p2].weapon.damage;
+				points += ( 0.5 * damage );
+				points = points > 100 ? 100 : points;
+				attack = false;
 				break;
 		}
+		if( attack == true ){
+			this._model.players[p2].points = points;
+			id =  p2 + 1; 
+		}
+		else{
+			this._model.players[p1].points = points;
+			id = p1 + 1;
+		}
 		
-		this._model.players[p2].points = points;
-		
-		p2 = p2 + 1;
-		
-		this._view.renderPointsLevel( p2 , points );
+		this._view.renderPointsLevel( id , points );
 	}
 	
 	lookForWeapon = (grid, positionA, positionB) => {
