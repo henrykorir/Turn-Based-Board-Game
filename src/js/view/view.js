@@ -3,11 +3,11 @@
 */
 export default class View{
 	constructor(){
-		this.createBoard();
+		this.renderBoard();
 		this.renderNextPossiblePositions = this.renderNextPossiblePositions.bind(this);
 	}
 	
-	createBoard = () => {
+	renderBoard = () => {
 		for(let i = 0; i < 10; i++){
 			for(let j = 0; j < 10; j++){
 				let id = "" + i + j;
