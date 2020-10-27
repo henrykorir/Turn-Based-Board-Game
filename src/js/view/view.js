@@ -96,9 +96,18 @@ export default class View{
 	renderPointsLevel = ( id, level ) => {
 		let width = level + "%";
 		let progressbar = (id == 1) ? $('#progress-bar1') : $('#progress-bar2');
-		if(level >= 1)
+		if(level >= 1){
 			progressbar.css({'width' : width}).text(width);
-		else 
+		}
+		else{
+			let player = "#" + (id == 1 ? "player1" : "player2");
+			let other  =  ((player == "#player1") ? "#player2" : "#player1");
+			console.log(other);
 			progressbar.css({'width': 100 + "%", "background" : "#ddd"}).html("0%");
+			$(player).remove();
+			$("div[class=modal-dialog]").css("width","25%");
+			$("div[class=modal-title]").text("WINNER");
+			$("div[class=modal-content]").css({"box-sizing" : "border-box", "border-radius" : "2em"});
+		}
 	}
 } 
