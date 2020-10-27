@@ -102,12 +102,11 @@ export default class View{
 		else{
 			let player = "#" + (id == 1 ? "player1" : "player2");
 			let other  =  ((player == "#player1") ? "#player2" : "#player1");
-			console.log(other);
 			progressbar.css({'width': 100 + "%", "background" : "#ddd"}).html("0%");
 			$(player).remove();
+			$(other).children('.btn').children().remove();
 			$("div[class=modal-dialog]").css("width","25%");
 			$("div[class=modal-title]").text("WINNER");
-			$("div[class=modal-content]").css({"box-sizing" : "border-box", "border-radius" : "2em"});
 		}
 	}
 } 
