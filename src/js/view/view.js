@@ -71,7 +71,7 @@ export default class View{
 	
 	setFightingClickHandler = ( handler ) => {
 		$("#player1Attack, #player2Attack, #player1Defend, #player2Defend")
-		.click( ( event ) => {
+		.on('click', ( event ) => {
 			let action; 
 			switch( event.target.id ){
 				case 'player1Attack':
@@ -95,13 +95,13 @@ export default class View{
 	}
 	renderPointsLevel = ( id, level ) => {
 		let width = level + "%";
+		let player = "#" + (id == 1 ? "player1" : "player2");
+		let other  =  ((player == "#player1") ? "#player2" : "#player1");
 		let progressbar = (id == 1) ? $('#progress-bar1') : $('#progress-bar2');
 		if(level >= 1){
 			progressbar.css({'width' : width}).text(width);
 		}
 		else{
-			let player = "#" + (id == 1 ? "player1" : "player2");
-			let other  =  ((player == "#player1") ? "#player2" : "#player1");
 			progressbar.css({'width': 100 + "%", "background" : "#ddd"}).html("0%");
 			$(player).remove();
 			$(other).children('.btn').children().remove();

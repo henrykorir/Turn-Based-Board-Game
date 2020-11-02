@@ -7,6 +7,7 @@ export default class Player{
 		this._box = box;
 		this._points = points;
 		this._weapon = weapon;
+		this._defend = false;
 	}
 	set id(id){
 		this._id = id;
@@ -31,6 +32,12 @@ export default class Player{
 	}
 	set weapon(weapon){
 		this._weapon = weapon;
+	}
+	set defend(defend){
+		this._defend = defend;
+	}
+	get defend(){
+		return this._defend;
 	}
 }
 
