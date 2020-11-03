@@ -1,4 +1,5 @@
 node_modules
 inspiration
 *.zip
+*.log
 dist
