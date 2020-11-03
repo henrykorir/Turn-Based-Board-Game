@@ -5,29 +5,41 @@
 		<link rel="stylesheet" href="./css/styles.css" type="text/css" />
 	</head>
 	<body>
+		<h1 style="margin-top: 0; font-size: medium; font-weight: bold; text-transform: uppercase;">Turn Based Board Game</h1>
 		<div class="container">
-			<!--
+			<fieldset class="board-area">
+				<legend style="font-weight: bold">Board</legend>
+				<div id="board" class="board"></div>
+			</fieldset>
 			<div class="sidebar">
-				<p>PLAYER 1</p>
-				<img src="./assets/player1.png" alt="Player 1" />
-				<img src="./assets/weapon1.png" alt="knife" />
-			</div>
-			-->
-			<div id="board" class="board"></div>
-			<div class="sidebar">
-				<div>
-					<p>PLAYER 1</p>
-					<img src="./assets/weapon1.png" alt="knife" />
-				</div>
-				<div>
-					<p>PLAYER 2</p>
-					<img src="./assets/weapon2.png" alt="scissor" />
-				</div>
+				<p style="font-weight: bold">Summary</p>
+				<fieldset>
+					<legend>player & weapon</legend>
+					<div>
+						<p>PLAYER 1</p>
+						<img id="img-1" src="./assets/weapon1.png" alt="knife" />
+					</div>
+					<div>
+						<p>PLAYER 2</p>
+						<img id="img-2" src="./assets/weapon2.png" alt="scissor" />
+					</div>
+				</fieldset>
+				<fieldset style="margin-top: 2em";>
+					<legend>weapon : impact</legend>
+					<p>knife 	: 	10<p/>
+					<p>scissor 	: 	20<p/>
+					<p>handle 	: 	30<p/>
+					<p>scimitor	: 	40<p/>
+				</fieldset>
 			</div>
 		</div>
-		<div class="legend-block">
-			<p style="margin: 0 0;">legend</p>
+		<fieldset class="legend-block">
+			<legend style="font-weight: bold">Legend</legend>
 			<div id="legend">
+				<div>
+					<img src="./assets/player1.png" alt="player 1" />
+					<p>player 1</p>
+				</div>
 				<div>
 					<img src="./assets/weapon1.png" alt="knife" />
 					<p>knife</p>
@@ -37,6 +49,10 @@
 					<p>scissor</p>
 				</div>
 				<div>
+					<img src="./assets/obstacle.png" alt="obstacle" />
+					<p>obstacle</p>
+				</div>
+				<div>
 					<img src="./assets/weapon3.png" alt="handle" />
 					<p>handle</p>
 				</div>
@@ -44,8 +60,12 @@
 					<img src="./assets/weapon4.png" alt="scimitor" />
 					<p>scimitor</p>
 				</div>
+				<div>
+					<img src="./assets/player2.png" alt="player 2" />
+					<p>player 2</p>
+				</div>
 			</div>
-		</div>
+		</fieldset>
 		<div id="dashboard" class="modal">
 			<div class="modal-dialog">
 				<div class="modal-content">
