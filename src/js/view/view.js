@@ -39,8 +39,11 @@ export default class View{
 	
 	rerenderWeaponAfterSwap = (currentWeapon, weaponToTake) => {
 		let previousWeapon 	= 'weapon' + (currentWeapon.id + 1) ; 
-		let newWeapon 		= 'weapon' + (weaponToTake.id + 1); 
-		console.log($(`div[data-gridpos=${ weaponToTake.box.attr.trim() }]`).attr('class'));
+		let newWeapon 		= 'weapon' + (weaponToTake.id + 1);
+		let src = './assets/weapon' + (weaponToTake.id + 1) + '.png';
+		let alt = weaponToTake.name;
+		let image_id = '#img-' + (this.currentPlayer.id + 1);
+		$(image_id).attr('src',src).attr('alt',alt);
 		if(($(`div[data-gridpos=${ weaponToTake.box.attr.trim() }]`).hasClass("player1") == false) || ($(`div[data-gridpos=${ weaponToTake.box.attr.trim() }]`).hasClass("player2") == false)){
 			$(`div[data-gridpos=${ weaponToTake.box.attr.trim() }]`)
 			.removeClass(newWeapon)
