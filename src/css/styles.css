@@ -168,7 +168,7 @@ ul li img{
 	bottom: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0,0,0,0.75);
+	background-color: rgba(236,240,241,0.75);
 	opacity: 1;
 	z-index: 1;
 	visibility: hidden;
@@ -227,6 +227,7 @@ ul li img{
 .btn{
 	margin-top: 1em;
 	border-bottom: 0;
+	cursor: pointer;
 }
 .button{
 	padding-top: 1em;
@@ -234,9 +235,12 @@ ul li img{
 	text-transform: uppercase;
 	margin-left: .5em;
 	margin-right: .5em;
-	cursor: pointer;
 	color: white;
 	border-radius: 4px;
+}
+.disable{
+	cursor: not-allowed;
+	pointer-events: none;
 }
 .legend-block{
 	display: block;

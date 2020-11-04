@@ -39,7 +39,6 @@ export default class Controller{
 				index++;
 			}
 		}
-		//console.log(grid);
 		this._model.setGrid( grid );
 		return this;
 	}
@@ -95,7 +94,6 @@ export default class Controller{
 			let damage = 10 *( i + 1 );
 			this._model.setWeapon(new Weapon(i, this._model.state.grid[index],((i < 3) ? "handle" : "scimitar"),damage));
 		}
-		console.log(this._model.state.weapons);
 		return this;
 	}
 	
@@ -114,7 +112,6 @@ export default class Controller{
 			this._model.weapons[weaponToTake.id].isTaken = true;
 			this._model.players[player.id].weapon = this._model.weapons[weaponToTake.id];
 			
-			//console.log(player.id, player.weapon,this._model.weapons);
 			this._view.rerenderWeaponAfterSwap(currentWeapon, weaponToTake);
 		}
 		
@@ -152,7 +149,6 @@ export default class Controller{
 		let attack = false;
 		p1 = (action == 1 || action == 3) ? 0 : 1; //index of active player
 		p2 = ( p1 == 0 ) ? 1 : 0; //index of player to be fought
-		console.log(this._model.players[p1]);
 		switch( action ){
 			case 1:
 			case 2:
