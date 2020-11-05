@@ -71,7 +71,7 @@ export default class Controller{
 		/*3b. otherwise set the box as occupied*/
 			this._model.state.grid[index].status = 3;
 		/*3c. create the item*/
-			let damage = 10 *( i + 1 );
+			let damage = 10;
 			let weapon = new Weapon(i, this._model.state.grid[index] ,((i < 1) ? "knife" : "scissor"), damage );
 			weapon.isTaken = true;
 			this._model.setWeapon(weapon);
@@ -91,7 +91,7 @@ export default class Controller{
 		/*3b  otherwise set the box as occupied*/
 			this._model.state.grid[index].status = 1;
 		/*4 */
-			let damage = 10 *( i + 1 );
+			let damage = 10 * i ;
 			this._model.setWeapon(new Weapon(i, this._model.state.grid[index],((i < 3) ? "handle" : "scimitar"),damage));
 		}
 		return this;
@@ -155,12 +155,10 @@ export default class Controller{
 				this._model.players[p1].defend = false;
 				damage = this._model.players[p1].weapon.damage;
 				points = this._model.players[p2].points;
-				if( points == 100 ) 
-					points -= 10; //default damage
 				if( this._model.players[p2].defend == true )
-					points -= (0.5 * 10);
+					points -= (0.5 * damage);
 				else 
-					points -= 10;
+					points -= damage;
 				this._model.players[p2].points = points;
 				attack = true;
 				break;

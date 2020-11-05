@@ -228,6 +228,7 @@ ul li img{
 	margin-top: 1em;
 	border-bottom: 0;
 	cursor: pointer;
+	box-shadow: inset 0px 0 7px #5e72e4;
 }
 .button{
 	padding-top: 1em;
@@ -238,9 +239,11 @@ ul li img{
 	color: white;
 	border-radius: 4px;
 }
-.disable{
+.disabled{
 	cursor: not-allowed;
 	pointer-events: none;
+	opacity: .25;
+	box-shadow: none;
 }
 .legend-block{
 	display: block;
