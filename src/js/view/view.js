@@ -75,6 +75,7 @@ export default class View{
 	setFightingClickHandler = ( handler ) => {
 		$("#player1Attack, #player2Attack, #player1Defend, #player2Defend")
 		.on('click', ( event ) => {
+			
 			let action; 
 			switch( event.target.id ){
 				case 'player1Attack':
@@ -90,6 +91,10 @@ export default class View{
 					action = 4;
 					break;
 			}
+			let currentPlayer = (action == 1 || action == 3) ? '#player1' : '#player2';
+			let otherPlayer   = (currentPlayer == '#player1') ? '#player2' : '#player1';
+			$(otherPlayer).find('.btn').removeClass('disabled');
+			$(currentPlayer).find('.btn').addClass('disabled');
 			handler( action );
 		});
 	}
