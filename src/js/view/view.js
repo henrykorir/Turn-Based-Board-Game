@@ -101,13 +101,18 @@ export default class View{
 	launchFightStage = () => {
 		$("#dashboard").css({'visibility':'visible'});
 	}
-	renderPointsLevel = ( id, level ) => {
+	renderPointsLevel = ( id, level, defense ) => {
 		let width = level + "%";
 		let player = "#" + (id == 1 ? "player1" : "player2");
 		let other  =  ((player == "#player1") ? "#player2" : "#player1");
 		let progressbar = (id == 1) ? $('#progress-bar1') : $('#progress-bar2');
+		let defended = '#player' + id + 'Defend';
 		if(level >= 1){
 			progressbar.css({'width' : width}).text(width);
+			if(defense == true) 
+				$(defended).addClass('disabled');
+			else 
+				$(defended).removeClass('disabled');
 		}
 		else{
 			progressbar.css({'width': 100 + "%", "background" : "#ddd"}).html("0%");

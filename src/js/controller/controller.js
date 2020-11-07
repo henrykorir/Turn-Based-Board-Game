@@ -171,7 +171,7 @@ export default class Controller{
 		}
 		if( attack == true ){
 			id =  p2 + 1; 
-			this._view.renderPointsLevel( id , points );
+			this._view.renderPointsLevel( id , points, this._model.players[p2].defend );
 		}
 	}
 	
