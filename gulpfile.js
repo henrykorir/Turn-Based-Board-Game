@@ -60,7 +60,8 @@ gulp.task('browserSync', () => {
 		}
 	});
 });
-
+//deploy
+gulp.task('deploy', gulp.series(['css', 'html', 'vendor', 'scripts', 'img']));
 // Watch Files For Changes
 gulp.task('watch',gulp.series(['browserSync']), function() {
     gulp.watch('src/js/**/*.js', gulp.series(['lint', 'scripts']));
