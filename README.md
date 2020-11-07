@@ -1,3 +1,4 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/89a8f1a1-123c-4725-bbcb-5254e2f64d2e/deploy-status)](https://app.netlify.com/sites/vigilant-joliot-e93b16/deploys)
 # Turn Based Board Game
 An online game in which 2 players play each turn to compete. 
 ## Description
