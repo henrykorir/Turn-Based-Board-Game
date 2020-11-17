@@ -37,23 +37,30 @@ export default class View{
 		this.currentPlayer =  player;
 	}
 	
-	rerenderWeaponAfterSwap = (currentWeapon, weaponToTake) => {
-		let previousWeapon 	= 'weapon' + (currentWeapon.id + 1) ; 
-		let newWeapon 		= 'weapon' + (weaponToTake.id + 1);
-		let src = './assets/weapon' + (weaponToTake.id + 1) + '.png';
-		let alt = weaponToTake.name;
+	rerenderWeaponAfterSwap = ( state ) => {
+		$('#board div').removeClass(['weapon1', 'weapon2', 'weapon3', 'weapon4', 'player1', 'player2']);
+		for(let player of state.players){
+			$('div[data-gridpos="'+ player.box.attr.trim() +'"]').addClass('player' + (player.id + 1));
+		}
+		for(let weapon of state.weapons){
+			if( weapon.isTaken == false  ){
+				if((weapon.box.id != state.players[0].box.id) && (weapon.box.id != state.players[1].box.id)){
+					console.log(weapon.isTaken);
+					$('div[data-gridpos="'+ weapon.box.attr.trim() +'"]')
+					.addClass('weapon' +(weapon.id + 1));
+				}
+			}
+		}
+		let src = './assets/weapon' + (this.currentPlayer.weapon.id + 1) + '.png';
+		let alt = this.currentPlayer.weapon.name;
 		let image_id = '#img-' + (this.currentPlayer.id + 1);
 		$(image_id).attr('src',src).attr('alt',alt);
-		if(($(`div[data-gridpos=${ weaponToTake.box.attr.trim() }]`).hasClass("player1") == false) || ($(`div[data-gridpos=${ weaponToTake.box.attr.trim() }]`).hasClass("player2") == false)){
-			$(`div[data-gridpos=${ weaponToTake.box.attr.trim() }]`)
-			.removeClass(newWeapon)
-			.toggleClass(previousWeapon);
-		}
 	}
 	
 	setBoxClickListener = ( handler ) => {
 		for( let id = 0; id < 100; id++ ){
 			let attr = ( id < 10 ) ? ('0' + id ): ("" + id);
+			let player = this.currentPlayer;
 			$(`div[data-gridpos=${ attr.trim() }]`).on("click", () =>{
 				if($(event.target).hasClass("flashing")){
 					let playerClass = 'player' + (this.currentPlayer.id + 1)//get player css class
