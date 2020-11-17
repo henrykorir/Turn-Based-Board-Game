@@ -97,8 +97,82 @@ export default class Controller{
 		return this;
 	}
 	
-	onPlayerMoved = ( player , dest ) => {
+	onPlayerMoved = ( currentPlayer , dest ) => {
+		let player = currentPlayer;
+		let srcPosition = player.box.position;
+		let srcSquare = this._model.grid.find(square => square.attr == player.box.attr);
+		/*A) if landing on a destination*/
+			let destSquare = this._model.grid.find(square => square.attr == dest);
+			//1. if destination has a weapon
+			if(destSquare.status == 1){
+				//1a. drop the current weapon at hand somewhere
+				this._model.weapons[player.weapon.id].isTaken = false;
+				//1b. take the weapon on the destination
+				let destWeapon = this._model.weapons.find(weapon => weapon.box.attr == dest);
+				this._model.weapons[player.weapon.id].box = destWeapon.box;
+				this._model.players[player.id].weapon = destWeapon;
+				this._model.players[player.id].box = destWeapon.box;
+				this._model.weapons[destWeapon.id].isTaken = true;
+				//1c. place the player on the destination box[1 - 3]
+				this._model.grid[destSquare.id].status = 3;
+				//render UI
+				this._view.rerenderWeaponAfterSwap( this._model.state/*weaponToDrop, weaponToTake*/);
+			}
+			//2. else if destination is empty
+			else{
+				//2a. place the player on the destination
+				this._model.players[player.id].box = destSquare;
+				this._model.players[player.id].weapon.box = destSquare;
+				this._model.weapons[player.weapon.id].box = destSquare;
+				this._model.grid[destSquare.id].status = 3;
+			}
 		
+		/*B) if leaving a square */
+			let weapon = this._model.weapons.find(weapon => weapon.box.id == srcSquare.id);
+			//1. if there is a weapon meant for the square
+			if(weapon !== undefined){
+				//1a. place the weapon on the square
+				this._model.grid[srcSquare.id].status = 1;
+				//render UI
+				this._view.rerenderWeaponAfterSwap( this._model.state/*weaponToDrop, weaponToTake*/);
+			}
+			//2. otherwise 
+			else{
+				//2a. set the square as unoccupied
+				this._model.grid[srcSquare.id].status = 0;
+			}
+		/*C) if passing over squares */
+			//1. look for square with a weapon
+			let grid = [...this._model.grid];
+			let square = this.lookForWeapon(grid, srcPosition, destSquare.position);
+			//2. if square has a weapon
+			if(square != null){
+				if(square.id != srcSquare.id && square.id != destSquare.id){
+					//2a. enumerate all weapons
+					let weaponToTake = this._model.weapons.find(weapon => weapon.box != null && weapon.box.id == square.id && weapon.isTaken == false);
+					let weaponToDrop = this._model.players[player.id].weapon;
+					//2b. drop the current weapon at hand
+					this._model.weapons[weaponToDrop.id].isTaken = false;
+					this._model.weapons[weaponToDrop.id].box = square;
+					//2c. pick the weapon on the box
+					this._model.weapons[weaponToTake.id].box = this._model.players[player.id].box;
+					this._model.weapons[weaponToTake.id].isTaken = true;
+					this._model.players[player.id].weapon = this._model.weapons[weaponToTake.id];
+					//render UI
+					this._view.rerenderWeaponAfterSwap( this._model.state/*weaponToDrop, weaponToTake*/);
+				}
+			}
+		if(this.isOtherPlayerAdjacent(grid, player.box.position)){
+			this._model.fighting = true;
+			this._view.launchFightStage();
+		}
+		//switch player
+		this._model.currentPlayer = this._model.players[currentPlayer.id == 0 ? 1 : 0]; 
+		
+		
+		
+		
+		/*
 		let grid = [...this._model.grid];
 		let square = grid.find(square => square.attr == dest);
 		let box = this.lookForWeapon(grid, player.box.position, square.position);
@@ -125,6 +199,7 @@ export default class Controller{
 		}
 		//Below is the turn taking point which causes the onPlayerChanged() callback to be fired
 		this._model.currentPlayer = this._model.players[player.id == 0 ? 1 : 0]; 
+		*/
 	}
 	
 	onPlayerChanged = ( state ) => {
