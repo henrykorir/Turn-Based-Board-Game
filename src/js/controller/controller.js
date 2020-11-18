@@ -168,38 +168,6 @@ export default class Controller{
 		}
 		//switch player
 		this._model.currentPlayer = this._model.players[currentPlayer.id == 0 ? 1 : 0]; 
-		
-		
-		
-		
-		/*
-		let grid = [...this._model.grid];
-		let square = grid.find(square => square.attr == dest);
-		let box = this.lookForWeapon(grid, player.box.position, square.position);
-		
-		if(box != null){
-			let weaponToTake = this._model.weapons.find(weapon => weapon.box != null && weapon.box.id == box.id && weapon.isTaken == false);
-			let currentWeapon = this._model.players[player.id].weapon;
-		
-			this._model.weapons[currentWeapon.id].isTaken = false;
-			this._model.weapons[currentWeapon.id].box = box;
-			this._model.weapons[weaponToTake.id].isTaken = true;
-			this._model.players[player.id].weapon = this._model.weapons[weaponToTake.id];
-			
-			this._view.rerenderWeaponAfterSwap(currentWeapon, weaponToTake);
-		}
-		
-		let index = parseInt(dest);
-		this._model.grid[player.box.id].status = 0; //set source  box as empty
-		this._model.grid[index].status = 3; //set destination box as occupied
-		this._model.players[player.id].box = this._model.grid[index];
-		if(this.isOtherPlayerAdjacent(grid, player.box.position)){
-			this._model.fighting = true;
-			this._view.launchFightStage();
-		}
-		//Below is the turn taking point which causes the onPlayerChanged() callback to be fired
-		this._model.currentPlayer = this._model.players[player.id == 0 ? 1 : 0]; 
-		*/
 	}
 	
 	onPlayerChanged = ( state ) => {
