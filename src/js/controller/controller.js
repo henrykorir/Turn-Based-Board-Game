@@ -164,7 +164,7 @@ export default class Controller{
 			}
 		if(this.isOtherPlayerAdjacent(grid, player.box.position)){
 			this._model.fighting = true;
-			this._view.launchFightStage();
+			this._view.launchFightStage(this._model.state);
 		}
 		//switch player
 		this._model.currentPlayer = this._model.players[currentPlayer.id == 0 ? 1 : 0]; 
