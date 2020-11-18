@@ -45,7 +45,6 @@ export default class View{
 		for(let weapon of state.weapons){
 			if( weapon.isTaken == false  ){
 				if((weapon.box.id != state.players[0].box.id) && (weapon.box.id != state.players[1].box.id)){
-					console.log(weapon.isTaken);
 					$('div[data-gridpos="'+ weapon.box.attr.trim() +'"]')
 					.addClass('weapon' +(weapon.id + 1));
 				}
@@ -105,7 +104,13 @@ export default class View{
 			handler( action );
 		});
 	}
-	launchFightStage = () => {
+	launchFightStage = (state) => {
+		for(let player of state.players){
+			let panel = '#player' + (player.id + 1);
+			let weapon = '<div><p style=" padding-top: 2px; padding-bottom: 2px">' + player.weapon.name + ' : ' + player.weapon.damage + '</p></div>';
+			$(panel).find('.btn').prepend(weapon);
+			console.log(player);
+		}
 		$("#dashboard").css({'visibility':'visible'});
 	}
 	renderPointsLevel = ( id, level, defense ) => {
@@ -116,10 +121,6 @@ export default class View{
 		let defended = '#player' + id + 'Defend';
 		if(level >= 1){
 			progressbar.css({'width' : width}).text(width);
-			if(defense == true) 
-				$(defended).addClass('disabled');
-			else 
-				$(defended).removeClass('disabled');
 		}
 		else{
 			progressbar.css({'width': 100 + "%", "background" : "#ddd"}).html("0%");
